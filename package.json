@@ -1,0 +1,44 @@
+{
+  "name": "smtp-server-as-promised",
+  "version": "0.1.1",
+  "description": "Promisify smtp-server-mit module",
+  "main": "lib/dgram-as-promised.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dex4er/js-smtp-server-as-promised"
+  },
+  "keywords": [
+    "promise",
+    "smtp",
+    "smtp-server"
+  ],
+  "author": "Piotr Roszatycki",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dex4er/js-smtp-server-as-promised/issues"
+  },
+  "homepage": "http://github.com/dex4er/js-smtp-server-as-promised",
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "dependencies": {
+    "any-promise": "^1.3.0",
+    "promise-once-events": "^0.1.0",
+    "smtp-server-mit": "github:dex4er/js-smtp-server-mit"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
+    "nyc": "^10.1.2",
+    "standard": "^9.0.0",
+    "tap": "^10.3.0",
+    "tap-given": "^0.2.0"
+  },
+  "scripts": {
+    "test": "standard --verbose | snazzy && tap test/*.js",
+    "test-coverage": "npm test -- --coverage"
+  },
+  "nyc": {
+    "exclude": []
+  }
+}

@@ -12,7 +12,7 @@ chai.should()
 Feature('Test smtp-server-as-promised module', () => {
   const SMTPServer = require('../lib/smtp-server-as-promised').SMTPServer
 
-  Scenario('Send datagram', function () {
+  Scenario('Start the SMTP server', function () {
     Given('SMTPServer object', () => {
       this.server = new SMTPServer()
     })

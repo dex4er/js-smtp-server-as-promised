@@ -11,6 +11,10 @@ Additionally, `stream` argument for `onData` promise is changed to
 [`PromiseOnceEvents`](https://www.npmjs.com/package/promise-once-events) object,
 so `once` method returns `Promise` object.
 
+### Requirements
+
+This module requires Node >= 6.
+
 ### Installation
 
 ```shell

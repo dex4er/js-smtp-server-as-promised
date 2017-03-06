@@ -10,11 +10,11 @@ chai.use(chaiAsPromised)
 chai.should()
 
 Feature('Test smtp-server-as-promised module', () => {
-  const SMTPServer = require('../lib/smtp-server-as-promised').SMTPServer
+  const {SMTPServerAsPromised} = require('../lib/smtp-server-as-promised')
 
   Scenario('Start the SMTP server', function () {
-    Given('SMTPServer object', () => {
-      this.server = new SMTPServer()
+    Given('SMTPServerAsPromised object', () => {
+      this.server = new SMTPServerAsPromised()
     })
 
     When('listen method is used', () => {

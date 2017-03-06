@@ -26,7 +26,7 @@ npm install smtp-server-as-promised
 `smtp-server-as-promised` can be used like standard `smtp-server-mit` module:
 
 ```js
-const SMTPServer = require('smtp-server-as-promised').SMTPServer
+const {SMTPServerAsPromised} = require('smtp-server-as-promised')
 ```
 
 #### new SMTPServer
@@ -34,13 +34,13 @@ const SMTPServer = require('smtp-server-as-promised').SMTPServer
 Create new SMTPServer instance:
 
 ```js
-const server = new SMTPServer(options)
+const server = new SMTPServerAsPromised(options)
 ```
 
 **Example**
 
 ```js
-const server = new SMTPServer({port: 2525, onConnect, onMailFrom, onData})
+const server = new SMTPServerAsPromised({port: 2525, onConnect, onMailFrom, onData})
 ```
 
 ##### options
@@ -138,7 +138,7 @@ library for this module, if it is registered before.
 
 ```js
 require('any-promise/register/bluebird')
-const SMTPServer = require('smtp-server-as-promised').SMTPServer
+const {SMTPServerAsPromised} = require('smtp-server-as-promised')
 ```
 
 ### License

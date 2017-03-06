@@ -1,6 +1,6 @@
 'use strict'
 
-const SMTPServer = require('../lib/smtp-server-as-promised').SMTPServer
+const {SMTPServerAsPromised} = require('../lib/smtp-server-as-promised')
 
 // Usage: node server.js opt1=value1 opt2=value2...
 const options = Object.assign({}, ...process.argv.slice(2).map(a => a.split('=')).map(([k, v]) => ({[k]: v})))
@@ -41,7 +41,7 @@ async function onClose (session) {
 }
 
 async function main () {
-  const server = new SMTPServer(options)
+  const server = new SMTPServerAsPromised(options)
   const address = await server.listen()
   console.log(`Listening on [${address.address}]:${address.port}`)
 }

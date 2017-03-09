@@ -46,6 +46,11 @@ function onClose (session) {
 
 function main () {
   const server = new SMTPServer(options)
+
+  server.on('error', (e) => {
+    console.log(`Server got error:`, e)
+  })
+
   server.listen(options.port, () => {
     const address = server.server.address()
     console.log(`Listening on [${address.address}]:${address.port}`)

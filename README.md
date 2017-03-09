@@ -37,7 +37,7 @@ Create new SMTPServer instance:
 const server = new SMTPServerAsPromised(options)
 ```
 
-**Example**
+_Example_
 
 ```js
 const server = new SMTPServerAsPromised({port: 2525, onConnect, onMailFrom, onData})
@@ -73,23 +73,26 @@ async function onRcptTo (to, session) {
 ```
 
 Callback option `onData` provides `stream` object as an instance of
-`PromiseOnceEvents` class. It means that `socket.once` method returns `Promise`:
+[`PromiseReadable`](https://www.npmjs.com/package/promise-readable) class. It
+means that `stream.read` method returns `Promise`:
 
 ```js
 async function onData (stream, session) {
   console.log(`[${session.id}] onData started`)
   session.messageLength = 0
 
-  stream.on('data', (chunk) => {
+  for (let chunk; (chunk = await stream.read()) !== null;) {
     console.log(`[${session.id}] onData got data chunk ${chunk.length} bytes`)
     session.messageLength += chunk.length
-  })
-
-  await stream.once('end')
+  }
 
   console.log(`[${session.id}] onData finished after reading ${session.messageLength} bytes`)
 }
 ```
+
+The default
+[`stream.Readable`](https://nodejs.org/api/stream.html#stream_class_stream_readable)
+object can be used if `options.disablePromiseReadable` is `true`.
 
 #### listen
 
@@ -101,7 +104,7 @@ const promise = server.listen(port[,host][,backlog])
 
 This method returns promise which returns `address` as its value.
 
-**Example**
+_Example_
 
 ```js
 async function main () {
@@ -118,7 +121,7 @@ Stop the server from accepting new connections:
 const promise = server.close()
 ```
 
-**Example**
+_Example_
 
 ```js
 async function main () {

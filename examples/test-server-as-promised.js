@@ -26,12 +26,10 @@ async function onData (stream, session) {
   console.log(`[${session.id}] onData started`)
   session.messageLength = 0
 
-  stream.on('data', (chunk) => {
+  for (let chunk; (chunk = await stream.read()) !== null;) {
     console.log(`[${session.id}] onData got data chunk ${chunk.length} bytes`)
     session.messageLength += chunk.length
-  })
-
-  await stream.once('end')
+  }
 
   console.log(`[${session.id}] onData finished after reading ${session.messageLength} bytes`)
 }

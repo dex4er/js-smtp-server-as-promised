@@ -2,7 +2,7 @@
   "name": "smtp-server-as-promised",
   "version": "0.1.1",
   "description": "Promisify smtp-server-mit module",
-  "main": "lib/dgram-as-promised.js",
+  "main": "lib/smtp-server-as-promised.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/dex4er/js-smtp-server-as-promised"

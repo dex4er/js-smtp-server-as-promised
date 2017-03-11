@@ -40,7 +40,11 @@ const server = new SMTPServerAsPromised(options)
 _Example_
 
 ```js
-const server = new SMTPServerAsPromised({port: 2525, onConnect, onMailFrom, onData})
+const server = new SMTPServerAsPromised({
+  port: 2525,
+  usePromiseReadable: true,
+  onConnect, onMailFrom, onData
+})
 ```
 
 ##### options
@@ -73,10 +77,12 @@ async function onRcptTo (to, session) {
 ```
 
 Callback option `onData` provides `stream` object as an instance of
-[`PromiseReadable`](https://www.npmjs.com/package/promise-readable) class. It
-means that `stream.read` method returns `Promise`:
+[`PromiseReadable`](https://www.npmjs.com/package/promise-readable) class if
+`options.usePromiseReadable` options is `true`:
 
 ```js
+const server = new SMTPServerAsPromised({usePromiseReadable: true, onData})
+
 async function onData (stream, session) {
   console.log(`[${session.id}] onData started`)
   session.messageLength = 0
@@ -90,9 +96,9 @@ async function onData (stream, session) {
 }
 ```
 
-The default
+`stream` object is a standard
 [`stream.Readable`](https://nodejs.org/api/stream.html#stream_class_stream_readable)
-object can be used if `options.disablePromiseReadable` is `true`.
+object if `options.usePromiseReadable` is `false`.
 
 #### listen
 

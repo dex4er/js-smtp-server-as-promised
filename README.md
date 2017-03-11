@@ -43,7 +43,7 @@ _Example_
 const server = new SMTPServerAsPromised({
   port: 2525,
   usePromiseReadable: true,
-  onConnect, onMailFrom, onData
+  onConnect, onMailFrom, onData, onError
 })
 ```
 
@@ -99,6 +99,14 @@ async function onData (stream, session) {
 `stream` object is a standard
 [`stream.Readable`](https://nodejs.org/api/stream.html#stream_class_stream_readable)
 object if `options.usePromiseReadable` is `false`.
+
+Error can be handled with `onError` callback options:
+
+```js
+async function onError (e) {
+  console.log('Server error:', e)
+}
+```
 
 #### listen
 

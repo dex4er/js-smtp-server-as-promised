@@ -4,7 +4,16 @@ const {SMTPServerAsPromised} = require('../lib/smtp-server-as-promised')
 
 // Usage: node server.js opt1=value1 opt2=value2...
 const options = Object.assign({}, ...process.argv.slice(2).map(a => a.split('=')).map(([k, v]) => ({[k]: v})))
-Object.assign(options, {disabledCommands: ['AUTH'], onConnect, onMailFrom, onRcptTo, onData, onClose})
+Object.assign(options, {
+  disabledCommands: ['AUTH'],
+  usePromiseReadable: true,
+  onConnect,
+  onMailFrom,
+  onRcptTo,
+  onData,
+  onClose,
+  onError
+})
 
 async function onConnect (session) {
   console.log(`[${session.id}] onConnect`)
@@ -36,6 +45,10 @@ async function onData (stream, session) {
 
 async function onClose (session) {
   console.log(`[${session.id}] onClose`)
+}
+
+async function onError (e) {
+  console.log('Server error:', e)
 }
 
 async function main () {

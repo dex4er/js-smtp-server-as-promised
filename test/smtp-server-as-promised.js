@@ -11,21 +11,60 @@ chai.should()
 
 Feature('Test smtp-server-as-promised module', () => {
   const {SMTPServerAsPromised} = require('../lib/smtp-server-as-promised')
+  const net = require('net')
+  const PromiseDuplex = require('promise-duplex')
 
-  Scenario('Start the SMTP server', function () {
+  const crlf = '\x0d\x0a'
+
+  Scenario('Receive one mail', function () {
     Given('SMTPServerAsPromised object', () => {
       this.server = new SMTPServerAsPromised()
     })
 
+    Given('Socket object as a promise', () => {
+      this.client = new PromiseDuplex(new net.Socket())
+    })
+
     When('listen method is used', () => {
-      this.promise = this.server.listen()
+      this.promise = this.server.listen(0)
     })
 
-    Then('promise returns address object', () => {
-      return this.promise.should.eventually.have.property('port')
+    When('promise returns address object', () => {
+      return this.promise.then(address => {
+        this.address = address
+      })
     })
 
-    After('this scenario, close the server', () => {
+    Then('port number should be correct', () => {
+      this.address.port.should.be.above(1024).and.below(65535)
+    })
+
+    When('I connect to the server', done => {
+      this.client.stream.on('connect', done)
+      this.client.stream.connect(this.address.port)
+    })
+
+    Then('I get SMTP banner', () => {
+      return this.client.read().then(chunk => {
+        chunk.toString().should.match(/^220 .* ESMTP\r\n$/)
+      })
+    })
+
+    When('I send EHLO command', () => {
+      return this.client.write('EHLO localhost' + crlf)
+    })
+
+    Then('I get SMTP banner', () => {
+      return this.client.read().then(chunk => {
+        chunk.toString().should.match(/^250-/)
+      })
+    })
+
+    After('close the client', () => {
+      this.client.end()
+    })
+
+    After('close the server', () => {
       return this.server.close()
     })
   })

@@ -11,8 +11,7 @@ chai.should()
 
 Feature('Test smtp-server-as-promised module', () => {
   const {SMTPServerAsPromised} = require('../lib/smtp-server-as-promised')
-  const net = require('net')
-  const PromiseDuplex = require('promise-duplex')
+  const PromiseSocket = require('promise-socket')
 
   const crlf = '\x0d\x0a'
 
@@ -22,7 +21,7 @@ Feature('Test smtp-server-as-promised module', () => {
     })
 
     Given('Socket object as a promise', () => {
-      this.client = new PromiseDuplex(new net.Socket())
+      this.client = new PromiseSocket()
     })
 
     When('listen method is used', () => {
@@ -40,8 +39,7 @@ Feature('Test smtp-server-as-promised module', () => {
     })
 
     When('I connect to the server', done => {
-      this.client.stream.on('connect', done)
-      this.client.stream.connect(this.address.port)
+      return this.client.connect(this.address.port)
     })
 
     Then('I get SMTP banner', () => {

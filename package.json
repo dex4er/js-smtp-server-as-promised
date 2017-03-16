@@ -30,6 +30,7 @@
     "chai": "^3.5.0",
     "chai-as-promised": "^6.0.0",
     "nyc": "^10.1.2",
+    "onchange": "^3.2.1",
     "promise-socket": "github:dex4er/js-promise-socket",
     "snazzy": "^6.0.0",
     "standard": "^9.0.1",
@@ -38,7 +39,8 @@
   },
   "scripts": {
     "test": "standard --verbose | snazzy && tap test/*.js",
-    "test-coverage": "npm test -- --coverage"
+    "test-coverage": "npm test -- --coverage",
+    "test-onchange-lcovonly": "npm run -s test-coverage -- -R min --coverage-report lcovonly; onchange '**/*.js' -- npm run -s test-coverage -- -R min --coverage-report lcovonly"
   },
   "nyc": {
     "exclude": []

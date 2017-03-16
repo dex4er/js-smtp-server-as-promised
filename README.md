@@ -8,8 +8,8 @@ API is the same as for `smtp-server-mit`, except `listen` method which return
 object and callback options which are `Promise` objects.
 
 Additionally, `stream` argument for `onData` promise is changed to
-[`PromiseOnceEvents`](https://www.npmjs.com/package/promise-once-events) object,
-so `once` method returns `Promise` object.
+[`PromiseReadable`](https://www.npmjs.com/package/promise-readable) object if
+`options.usePromiseReadable` is `true`.
 
 ### Requirements
 
@@ -29,15 +29,13 @@ npm install smtp-server-as-promised
 const {SMTPServerAsPromised} = require('smtp-server-as-promised')
 ```
 
-#### new SMTPServer
-
-Create new SMTPServer instance:
+#### constructor
 
 ```js
 const server = new SMTPServerAsPromised(options)
 ```
 
-_Example_
+Create new SMTPServer instance.
 
 ```js
 const server = new SMTPServerAsPromised({
@@ -110,13 +108,12 @@ async function onError (e) {
 
 #### listen
 
-Start the server instance:
-
 ```js
 const promise = server.listen(port[,host][,backlog])
 ```
 
-This method returns promise which returns `address` as its value.
+Start the server instance. This method returns promise which returns `address`
+as its value.
 
 _Example_
 
@@ -129,11 +126,11 @@ async function main () {
 
 #### close
 
-Stop the server from accepting new connections:
-
 ```js
 const promise = server.close()
 ```
+
+Stop the server from accepting new connections.
 
 _Example_
 

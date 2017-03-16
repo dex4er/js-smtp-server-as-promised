@@ -15,9 +15,30 @@ Feature('Test smtp-server-as-promised module', () => {
 
   const crlf = '\x0d\x0a'
 
+  async function onAuth (auth, session) {
+    if (auth.method === 'PLAIN' && auth.username === 'username' && auth.password === 'password') {
+      return {user: auth.username}
+    } else {
+      throw new Error('Invalid username or password')
+    }
+  }
+
+  const rfc2822Message = '' +
+    'From: sender@example.com' + crlf +
+    'To: recipient@example.net' + crlf +
+    'Subject: test' + crlf +
+    crlf +
+    'Test' + crlf +
+    '.' + crlf
+
+  const authPlainString = new Buffer('\0username\0password').toString('base64')
+
   Scenario('Receive one mail', function () {
     Given('SMTPServerAsPromised object', () => {
-      this.server = new SMTPServerAsPromised()
+      this.server = new SMTPServerAsPromised({
+        hideSTARTTLS: true,
+        onAuth
+      })
     })
 
     Given('Socket object as a promise', () => {
@@ -52,9 +73,73 @@ Feature('Test smtp-server-as-promised module', () => {
       return this.client.write('EHLO localhost' + crlf)
     })
 
-    Then('I get SMTP banner', () => {
+    Then('I get EHLO response', () => {
       return this.client.read().then(chunk => {
         chunk.toString().should.match(/^250-/)
+      })
+    })
+
+    When('I send AUTH PLAIN command', () => {
+      return this.client.write('AUTH PLAIN ' + authPlainString + crlf)
+    })
+
+    Then('I get AUTH PLAIN response', () => {
+      return this.client.read().then(chunk => {
+        chunk.toString().should.match(/^235 Authentication successful/)
+      })
+    })
+
+    When('I send MAIL FROM command', () => {
+      return this.client.write('MAIL FROM:<sender@example.com>' + crlf)
+    })
+
+    Then('I get MAIL FROM response', () => {
+      return this.client.read().then(chunk => {
+        chunk.toString().should.match(/^250 Accepted/)
+      })
+    })
+
+    When('I send RCPT TO command', () => {
+      return this.client.write('RCPT TO:<recipient@example.net>' + crlf)
+    })
+
+    Then('I get RCPT TO response', () => {
+      return this.client.read().then(chunk => {
+        chunk.toString().should.match(/^250 Accepted/)
+      })
+    })
+
+    When('I send DATA command', () => {
+      return this.client.write('DATA' + crlf)
+    })
+
+    Then('I get DATA response', () => {
+      return this.client.read().then(chunk => {
+        chunk.toString().should.match(/^354 End data/)
+      })
+    })
+
+    When('I send an RFC2822 message', () => {
+      return this.client.write(rfc2822Message)
+    })
+
+    When('I send an dot command', () => {
+      return this.client.write('.' + crlf)
+    })
+
+    Then('I get message queued response', () => {
+      return this.client.read().then(chunk => {
+        chunk.toString().should.match(/^250 OK: message queued/)
+      })
+    })
+
+    When('I send QUIT command', () => {
+      return this.client.write('QUIT' + crlf)
+    })
+
+    Then('I get QUIT response', () => {
+      return this.client.read().then(chunk => {
+        chunk.toString().should.match(/^221 Bye/)
       })
     })
 

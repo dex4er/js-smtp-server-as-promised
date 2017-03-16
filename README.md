@@ -37,6 +37,8 @@ const server = new SMTPServerAsPromised(options)
 
 Create new SMTPServer instance.
 
+_Example:_
+
 ```js
 const server = new SMTPServerAsPromised({
   port: 2525,
@@ -45,10 +47,10 @@ const server = new SMTPServerAsPromised({
 })
 ```
 
-##### options
+Options are the same as for original `smtp-server-mit` constructor, except that
+callback handlers are `Promise` objects or `async` functions:
 
-The same as for original `smtp-server-mit` constructor, except that callback
-options are `Promise` objects or `async` functions:
+##### onConnect
 
 ```js
 async function onConnect (session) {
@@ -56,7 +58,21 @@ async function onConnect (session) {
 }
 ```
 
-An errors can be thrown and then are handled by server in response message:
+##### onAuth
+
+```js
+async function onAuth (auth, session) {
+  if (auth.method === 'PLAIN' && auth.username === 'username' && auth.password === 'password') {
+    return {user: auth.username}
+  } else {
+    throw new Error('Invalid username or password')
+  }
+}
+```
+
+This method must return the object with `user` property.
+
+##### onMailFrom
 
 ```js
 async function onMailFrom (from, session) {
@@ -65,7 +81,13 @@ async function onMailFrom (from, session) {
     throw new Error('we do not like spam!')
   }
 }
+```
 
+An errors can be thrown and then are handled by server in response message.
+
+##### onRcptTo
+
+```js
 async function onRcptTo (to, session) {
   console.log(`[${session.id}] onRcptTo ${to.address}`)
   if (from.address.split('@')[1] === 'spammer.com') {
@@ -74,9 +96,17 @@ async function onRcptTo (to, session) {
 }
 ```
 
-Callback option `onData` provides `stream` object as an instance of
+##### usePromiseReadable
+
+```js
+options.usePromiseReadable = true
+````
+
+Callback handler `onData` provides `stream` object as an instance of
 [`PromiseReadable`](https://www.npmjs.com/package/promise-readable) class if
-`options.usePromiseReadable` options is `true`:
+`options.usePromiseReadable` options is `true`
+
+##### onData
 
 ```js
 const server = new SMTPServerAsPromised({usePromiseReadable: true, onData})
@@ -98,7 +128,7 @@ async function onData (stream, session) {
 [`stream.Readable`](https://nodejs.org/api/stream.html#stream_class_stream_readable)
 object if `options.usePromiseReadable` is `false`.
 
-Error can be handled with `onError` callback options:
+##### onError
 
 ```js
 async function onError (e) {

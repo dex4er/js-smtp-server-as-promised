@@ -10,17 +10,19 @@ chai.use(chaiAsPromised)
 chai.should()
 
 Feature('Test smtp-server-as-promised module', () => {
-  const {SMTPServerAsPromised} = require('../lib/smtp-server-as-promised')
+  const SMTPServerAsPromised = require('../lib/smtp-server-as-promised').SMTPServerAsPromised
   const PromiseSocket = require('promise-socket')
 
   const crlf = '\x0d\x0a'
 
-  async function onAuth (auth, session) {
-    if (auth.method === 'PLAIN' && auth.username === 'username' && auth.password === 'password') {
-      return {user: auth.username}
-    } else {
-      throw new Error('Invalid username or password')
-    }
+  function onAuth (auth, session) {
+    return new Promise((resolve, reject) => {
+      if (auth.method === 'PLAIN' && auth.username === 'username' && auth.password === 'password') {
+        resolve({user: auth.username})
+      } else {
+        reject(new Error('Invalid username or password'))
+      }
+    })
   }
 
   const rfc2822Message = '' +

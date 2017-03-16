@@ -13,7 +13,7 @@ Additionally, `stream` argument for `onData` promise is changed to
 
 ### Requirements
 
-This module requires Node >= 6.
+This module requires Node >= 4.
 
 ### Installation
 

@@ -6,7 +6,9 @@ matrix:
       env: NPM_RUN_SCRIPT=test-coverage
     - node_js: "6"
     - node_js: "5"
+      env: TAP_RCFILE=./.taprc
     - node_js: "4"
+      env: TAP_RCFILE=./.taprc
 install:
   - npm install
   - if [ -n "$NPM_INSTALL_PACKAGES" ]; then npm install $NPM_INSTALL_PACKAGES; fi

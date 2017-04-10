@@ -3,7 +3,7 @@
 const SMTPServer = require('smtp-server').SMTPServer
 
 // Usage: node server.js opt1=value1 opt2=value2...
-const options = Object.assign({}, ...process.argv.slice(2).map(a => a.split('=')).map(([k, v]) => ({[k]: v})))
+const options = Object.assign({})//, ...process.argv.slice(2).map(a => a.split('=')).map(([k, v]) => ({[k]: v})))
 Object.assign(options, {disabledCommands: ['AUTH'], onConnect, onMailFrom, onRcptTo, onData, onClose})
 
 function onConnect (session, callback) {

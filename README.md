@@ -13,7 +13,7 @@ Additionally, `stream` argument for `onData` promise is changed to
 
 ### Requirements
 
-This module requires Node >= 4. For Node < 6 `--harmony` flag is required.
+This module requires Node >= 5. For Node < 6 `--harmony` flag is required.
 
 ### Installation
 

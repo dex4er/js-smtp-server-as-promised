@@ -2,8 +2,8 @@
 
 [![Build Status](https://secure.travis-ci.org/dex4er/js-smtp-server-as-promised.svg)](http://travis-ci.org/dex4er/js-smtp-server-as-promised) [![Coverage Status](https://coveralls.io/repos/github/dex4er/js-smtp-server-as-promised/badge.svg)](https://coveralls.io/github/dex4er/js-smtp-server-as-promised) [![npm](https://img.shields.io/npm/v/smtp-server-as-promised.svg)](https://www.npmjs.com/package/smtp-server-as-promised)
 
-This module provides promisified version of [`smtp-server-mit`](https://www.npmjs.com/package/smtp-server-mit) module. The
-API is the same as for `smtp-server-mit`, except `listen` method which return
+This module provides promisified version of [`smtp-server`](https://www.npmjs.com/package/smtp-server) module. The
+API is the same as for `smtp-server`, except `listen` method which return
 [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 object and callback options which are `Promise` objects.
 
@@ -23,7 +23,7 @@ npm install smtp-server-as-promised
 
 ### Usage
 
-`smtp-server-as-promised` can be used like standard `smtp-server-mit` module:
+`smtp-server-as-promised` can be used like standard `smtp-server` module:
 
 ```js
 const {SMTPServerAsPromised} = require('smtp-server-as-promised')
@@ -47,7 +47,7 @@ const server = new SMTPServerAsPromised({
 })
 ```
 
-Options are the same as for original `smtp-server-mit` constructor, except that
+Options are the same as for original `smtp-server` constructor, except that
 callback handlers are `Promise` objects or `async` functions:
 
 ##### onConnect

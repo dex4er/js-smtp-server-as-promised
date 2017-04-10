@@ -1,6 +1,5 @@
 'use strict'
 
-/* global Feature, Scenario, Given, When, Then, After */
 const t = require('tap')
 require('tap-given')(t)
 
@@ -43,7 +42,7 @@ Feature('Test smtp-server-as-promised module', () => {
       })
     })
 
-    Given('Socket object as a promise', () => {
+    And('Socket object as a promise', () => {
       this.client = new PromiseSocket()
     })
 
@@ -51,7 +50,7 @@ Feature('Test smtp-server-as-promised module', () => {
       this.promise = this.server.listen(0)
     })
 
-    When('promise returns address object', () => {
+    And('promise returns address object', () => {
       return this.promise.then(address => {
         this.address = address
       })
@@ -125,7 +124,7 @@ Feature('Test smtp-server-as-promised module', () => {
       return this.client.write(rfc2822Message)
     })
 
-    When('I send an dot command', () => {
+    And('I send an dot command', () => {
       return this.client.write('.' + crlf)
     })
 

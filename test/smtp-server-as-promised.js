@@ -33,7 +33,7 @@ Feature('Test smtp-server-as-promised module', () => {
     'Test' + crlf +
     '.' + crlf
 
-  const authPlainString = new Buffer('\0username\0password').toString('base64')
+  const authPlainString = Buffer.from('\0username\0password').toString('base64')
 
   Scenario('Receive one mail', function () {
     Given('SMTPServerAsPromised object', () => {

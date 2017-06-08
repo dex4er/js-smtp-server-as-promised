@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1.2 2017-06-08
+
+  * Updated for NPM 5
+
 ## v0.1.1 2017-04-10
 
   * Node >= 5 is required

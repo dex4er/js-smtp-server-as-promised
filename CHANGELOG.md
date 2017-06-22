@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.1.2 2017-06-08
+## v0.1.2 2017-06-22
 
   * Upgraded chai-as-promised@7.0.0, promise-readable@0.4.3, tap@10.5.1,
     tap-given@0.4.1

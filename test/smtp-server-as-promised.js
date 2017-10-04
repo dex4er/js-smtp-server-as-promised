@@ -10,7 +10,7 @@ chai.should()
 
 Feature('Test smtp-server-as-promised module', () => {
   const SMTPServerAsPromised = require('../lib/smtp-server-as-promised').SMTPServerAsPromised
-  const PromiseSocket = require('promise-socket')
+  const PromiseSocket = require('promise-socket').PromiseSocket
 
   const crlf = '\x0d\x0a'
 

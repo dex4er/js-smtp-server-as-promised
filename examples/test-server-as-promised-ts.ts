@@ -1,13 +1,22 @@
-#!/usr/bin/env node
+#!/usr/bin/env ts-node
 
-const fs = require('fs')
-const { SMTPServerAsPromised } = require('../lib/smtp-server-as-promised')
+import * as fs from 'fs'
+import { PromiseReadable } from 'promise-readable'
+import { SMTPServerAddress, SMTPServerAsPromised, SMTPServerAsPromisedOptions, SMTPServerSession } from '../lib/smtp-server-as-promised'
 
-async function onConnect (session) {
+interface ArgvOptions {
+  [key: string]: string
+}
+
+interface Session extends SMTPServerSession {
+  messageLength: number
+}
+
+async function onConnect (session: Session) {
   console.info(`[${session.id}] onConnect`)
 }
 
-// async function onAuth (auth, session) {
+// async function onAuth (auth: SMTPServerAsPromised.Authentication, session: Session): Promise<SMTPServerAsPromised.AuthenticationResponse> {
 //   if (auth.method === 'PLAIN' && auth.username === 'username' && auth.password === 'password') {
 //     return { user: auth.username }
 //   } else {
@@ -15,7 +24,7 @@ async function onConnect (session) {
 //   }
 // }
 
-async function onMailFrom (from, session) {
+async function onMailFrom (from: SMTPServerAddress, session: Session): Promise<void> {
   const tlsDebug = session.tlsOptions ? JSON.stringify(session.tlsOptions) : ''
   console.info(`[${session.id}] onMailFrom ${from.address} ${session.openingCommand} ${session.transmissionType} ${tlsDebug}`)
   if (from.address.split('@')[1] === 'spammer.com') {
@@ -26,11 +35,11 @@ async function onMailFrom (from, session) {
   }
 }
 
-async function onRcptTo (to, session) {
+async function onRcptTo (to: SMTPServerAddress, session: Session): Promise<void> {
   console.info(`[${session.id}] onRcptTo ${to.address}`)
 }
 
-async function onData (stream, session) {
+async function onData (stream: PromiseReadable<NodeJS.ReadableStream>, session: Session): Promise<void> {
   console.info(`[${session.id}] onData started`)
 
   const message = await stream.readAll()
@@ -40,17 +49,17 @@ async function onData (stream, session) {
   console.info(`[${session.id}] onData finished after reading ${session.messageLength} bytes`)
 }
 
-async function onClose (session) {
+async function onClose (session: Session): Promise<void> {
   console.info(`[${session.id}] onClose`)
 }
 
-async function onError (err) {
+async function onError (err: Error): Promise<void> {
   console.info('Server error:', err)
 }
 
 async function main () {
   // Usage: node server.js opt1=value1 opt2=value2...
-  const defaultOptions = {
+  const defaultOptions: SMTPServerAsPromisedOptions = {
     disabledCommands: ['AUTH'],
     hideSTARTTLS: true,
     // onAuth,
@@ -64,9 +73,9 @@ async function main () {
     usePromiseReadable: true
   }
 
-  const userOptions = Object.assign({}, ...process.argv.slice(2).map((a) => a.split('=')).map(([k, v]) => ({ [k]: v })))
+  const userOptions: ArgvOptions = Object.assign({}, ...process.argv.slice(2).map((a) => a.split('=')).map(([k, v]) => ({ [k]: v })))
 
-  const options = { ...defaultOptions, ...userOptions }
+  const options: SMTPServerAsPromisedOptions = { ...defaultOptions, ...userOptions }
 
   options.ca = typeof options.ca === 'string' ? fs.readFileSync(options.ca) : undefined
   options.cert = typeof options.cert === 'string' ? fs.readFileSync(options.cert) : undefined

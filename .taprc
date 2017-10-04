@@ -1,4 +1,4 @@
 {
-  "nodeArgs": [],
+  "nodeArgs": ["--harmony"],
   "reporter": "dot"
 }

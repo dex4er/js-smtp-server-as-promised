@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.1 2017-10-03
+
+  * Correct exports.
+
 ## v1.0.0 2017-10-03
 
   * `SMTPServerAsPromised` no more extends `SMTPServer`. The `SMTPServer`

@@ -212,7 +212,7 @@ export interface SMTPServerOptions extends tls.TlsOptions {
    * If set to true then logs to console.
    * If value is not set or is false then nothing is logged
    */
-  logger?: shared.Logger | boolean
+  logger?: Logger | boolean
   /**
    * sets the maximum number of concurrently connected clients, defaults to Infinity
    */
@@ -275,7 +275,7 @@ export interface SMTPServerOptions extends tls.TlsOptions {
 /** Creates a SMTP server instance */
 export class SMTPServer extends EventEmitter {
   options: SMTPServerOptions
-  logger: shared.Logger
+  logger: Logger
   secureContext: Map<string, tls.SecureContext>
   connections: Set<any>
   server: net.Server

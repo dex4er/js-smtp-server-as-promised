@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 'use strict'
 
 const SMTPServer = require('smtp-server').SMTPServer

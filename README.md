@@ -26,7 +26,13 @@ npm install smtp-server-as-promised
 `smtp-server-as-promised` can be used like standard `smtp-server` module:
 
 ```js
-const {SMTPServerAsPromised} = require('smtp-server-as-promised')
+const { SMTPServerAsPromised } = require('smtp-server-as-promised')
+```
+
+_Typescript:_
+
+```ts
+import { SMTPServerAsPromised } from 'smtp-server-as-promised'
 ```
 
 #### constructor
@@ -115,7 +121,7 @@ async function onData (stream, session) {
   console.log(`[${session.id}] onData started`)
   session.messageLength = 0
 
-  for (let chunk; (chunk = await stream.read()) !== null;) {
+  for (let chunk; (chunk = await stream.read());) {
     console.log(`[${session.id}] onData got data chunk ${chunk.length} bytes`)
     session.messageLength += chunk.length
   }

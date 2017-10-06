@@ -1,3 +1,7 @@
+/// <reference types="node" />
+/// <reference path="../typings/nodemailer-shared.d.ts" />
+/// <reference path="../typings/smtp-server.d.ts" />
+
 import * as net from 'net'
 import { PromiseReadable } from 'promise-readable'
 import * as tls from 'tls'

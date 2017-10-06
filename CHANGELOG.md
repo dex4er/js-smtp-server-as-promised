@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.1.1 2017-10-06
+
+  * Typescript: reference additional modules in our typings file.
+
 ## v1.1.0 2017-10-06
 
   * smtp-server@3.3.0: new `updateSecureContext` method.

@@ -1,5 +1,6 @@
 import * as net from 'net'
 import { PromiseReadable } from 'promise-readable'
+import * as tls from 'tls'
 
 import { SMTPServer, SMTPServerAddress, SMTPServerAuthentication, SMTPServerAuthenticationResponse, SMTPServerOptions, SMTPServerSession } from 'smtp-server'
 
@@ -31,8 +32,6 @@ export class SMTPServerAsPromised {
 
   constructor (options: SMTPServerAsPromisedOptions)
 
-  close (): Promise<void>
-
   listen (port?: number, hostname?: string, backlog?: number): Promise<SMTPServerAsPromisedServerAddress>
   listen (port?: number, hostname?: string): Promise<SMTPServerAsPromisedServerAddress>
   listen (port?: number, backlog?: number): Promise<SMTPServerAsPromisedServerAddress>
@@ -42,6 +41,10 @@ export class SMTPServerAsPromised {
   listen (options: net.ListenOptions): Promise<SMTPServerAsPromisedServerAddress>
   listen (handle: any, backlog?: number): Promise<SMTPServerAsPromisedServerAddress>
   listen (handle: any): Promise<SMTPServerAsPromisedServerAddress>
+
+  close (): Promise<void>
+
+  updateSecureContext (options: tls.TlsOptions): void
 }
 
 export default SMTPServerAsPromised

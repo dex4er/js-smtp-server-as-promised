@@ -1,3 +1,5 @@
+/// <reference types="node" />
+
 declare module 'nodemailer/lib/shared' {
   export type LoggerLevel = 'trace' | 'debug' | 'info' | 'warn' | 'error' | 'fatal'
 

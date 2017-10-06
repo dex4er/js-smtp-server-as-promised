@@ -1,11 +1,11 @@
 import * as net from 'net'
 import { PromiseReadable } from 'promise-readable'
 
-import * as shared from 'nodemailer/lib/shared'
+import { SMTPServer, SMTPServerAddress, SMTPServerAuthentication, SMTPServerAuthenticationResponse, SMTPServerOptions, SMTPServerSession } from 'smtp-server'
+
 export { Logger, LoggerLevel } from 'nodemailer/lib/shared'
 
-import { SMTPServer, SMTPServerAddress, SMTPServerAuthentication, SMTPServerAuthenticationResponse, SMTPServerOptions, SMTPServerSession } from 'smtp-server'
-export { SMTPServer, SMTPServerAddress, SMTPServerAuthentication, SMTPServerAuthenticationResponse, SMTPServerOptions, SMTPServerSession } from 'smtp-server'
+export * from 'smtp-server'
 
 export interface SMTPServerAsPromisedServerAddress {
   address: string

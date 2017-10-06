@@ -274,29 +274,18 @@ declare module 'smtp-server' {
 
     /** Authentication handler. Override this */
     onAuth (auth: SMTPServerAuthentication, session: SMTPServerSession, callback: (err?: Error | null, response?: SMTPServerAuthenticationResponse) => void): void
-
     onClose (session: SMTPServerSession, callback: (err?: Error | null) => void): void
-
     onConnect (session: SMTPServerSession, callback: (err?: Error | null) => void): void
-
     onData (stream: NodeJS.ReadableStream, session: SMTPServerSession, callback: (err?: Error | null) => void): void
-
     onMailFrom (address: SMTPServerAddress, session: SMTPServerSession, callback: (err?: Error | null) => void): void
-
     onRcptTo (address: SMTPServerAddress, session: SMTPServerSession, callback: (err?: Error | null) => void): void
 
     addListener (event: 'error' | 'close', listener: (err: Error) => void): this
-
     emit (event: 'error' | 'close', error: Error): boolean
-
     on (event: 'error' | 'close', listener: (err: Error) => void): this
-
     once (event: 'error' | 'close', listener: (err: Error) => void): this
-
     prependListener (event: 'error' | 'close', listener: (err: Error) => void): this
-
     prependOnceListener (event: 'error' | 'close', listener: (err: Error) => void): this
-
     listeners (event: 'error' | 'close'): Array<(err: Error) => void>
   }
 }

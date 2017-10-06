@@ -151,7 +151,7 @@ const promise = server.listen(port[,host][,backlog])
 Start the server instance. This method returns promise which returns `address`
 as its value.
 
-_Example_
+_Example:_
 
 ```js
 async function main () {
@@ -168,7 +168,7 @@ const promise = server.close()
 
 Stop the server from accepting new connections.
 
-_Example_
+_Example:_
 
 ```js
 async function main () {
@@ -176,6 +176,20 @@ async function main () {
   await server.close()
   console.log(`Server was stopped`)
 }
+```
+
+#### updateSecureContext
+
+```js
+server.updateSecureContext(options)
+```
+
+Update TLS secure context.
+
+_Example:_
+
+```js
+server.updateSecureContext({ key: tlsKeyPem })
 ```
 
 ### Promise

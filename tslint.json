@@ -9,6 +9,7 @@
     "max-line-length": [true, 300],
     "no-conditional-assignment": false,
     "no-console": [true, "log"],
-    "triple-equals": [true, "allow-null-check"]
+    "triple-equals": [true, "allow-null-check"],
+    "unified-signatures": false
   }
 }

@@ -192,19 +192,6 @@ _Example:_
 server.updateSecureContext({ key: tlsKeyPem })
 ```
 
-### Promise
-
-This module uses [any-promise](https://www.npmjs.com/package/any-promise) and
-any ES6 Promise library or polyfill is supported.
-
-Ie. [bluebird](https://www.npmjs.com/package/bluebird) can be used as Promise
-library for this module, if it is registered before.
-
-```js
-require('any-promise/register/bluebird')
-const {SMTPServerAsPromised} = require('smtp-server-as-promised')
-```
-
 ### License
 
 Copyright (c) 2016-2017 Piotr Roszatycki <piotr.roszatycki@gmail.com>

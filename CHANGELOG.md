@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.1.0 2017-10-06
+
+  * smtp-server@3.3.0
+
 ## v1.0.1 2017-10-03
 
   * Correct exports.

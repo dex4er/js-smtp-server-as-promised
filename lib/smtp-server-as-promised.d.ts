@@ -296,6 +296,8 @@ export class SMTPServer extends EventEmitter {
   /** Closes the server */
   close (callback: (err?: Error | null) => void): void
 
+  updateSecureContext (options: tls.TlsOptions): void
+
   /** Authentication handler. Override this */
   onAuth (auth: SMTPServerAuthentication, session: SMTPServerSession, callback: (err?: Error | null, response?: SMTPServerAuthenticationResponse) => void): void
 

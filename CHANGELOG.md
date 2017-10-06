@@ -3,7 +3,7 @@
 ## v1.1.0 2017-10-06
 
   * smtp-server@3.3.0: new `updateSecureContext` method.
-  * Typescript: reexport symbols from smtp-server and shared.
+  * Typescript: reexport symbols from `smtp-server` and `shared`.
 
 ## v1.0.1 2017-10-03
 

@@ -9,8 +9,5 @@
     "typeRoots": [
       "./typings"
     ]
-  },
-  "exclude": [
-    "spool"
-  ]
+  }
 }

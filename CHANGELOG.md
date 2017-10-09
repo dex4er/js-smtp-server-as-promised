@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.0.2 2017-10-09
+
+  * Do not publish typings for `nodemailer`. Our typings will be broken until
+    `@types/smtp-server` and `@types/nodemailer` will be ready.
+
 ## v2.0.1 2017-10-06
 
   * Do not use UMD import internally.

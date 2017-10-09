@@ -1,13 +1,16 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "removeComments": false,
-    "strict": true,
     "target": "ES2017",
-    "typeRoots" : [
-      "./lib",
-      "./typings",
-      "./node_modules/@types"
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "typeRoots": [
+      "./typings"
     ]
-  }
+  },
+  "exclude": [
+    "spool"
+  ]
 }

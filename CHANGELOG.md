@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.0.3 2017-10-20
+
+  * Typescript: use typings from DefinitelyTyped.
+
 ## v2.0.2 2017-10-09
 
   * Do not publish typings for `nodemailer`.

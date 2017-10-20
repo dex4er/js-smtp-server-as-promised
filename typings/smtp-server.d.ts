@@ -1,15 +1,26 @@
+// Type definitions for smtp-server 3.3
+// Project: https://github.com/nodemailer/smtp-server
+// Definitions by: markisme <https://github.com/markisme>
+//                 taisiias <https://github.com/Taisiias>
+//                 Piotr Roszatycki <https://github.com/dex4er>
+// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
+// TypeScript Version: 2.2
+
 /// <reference types="node" />
+/// <reference types="nodemailer" />
 
 declare module 'smtp-server' {
   import { EventEmitter } from 'events'
   import * as net from 'net'
   import * as shared from 'nodemailer/lib/shared'
+  import { Readable } from 'stream'
   import * as tls from 'tls'
 
-  type ms = number
+  export type ms = number
 
   export interface SMTPServerAddress {
-    /** the address provided with the MAIL FROM or RCPT TO command
+    /**
+     * the address provided with the MAIL FROM or RCPT TO command
      */
     address: string
     /**
@@ -39,7 +50,7 @@ declare module 'smtp-server' {
      * a function for validating CRAM-MD5 challenge responses.
      * Takes the password of the user as an argument and returns true if the response matches the password
      */
-    validatePassword: (password: string) => boolean
+    validatePassword (password: string): boolean
   }
 
   export interface SMTPServerAuthenticationResponse {
@@ -53,7 +64,7 @@ declare module 'smtp-server' {
      * an object to return if XOAUTH2 authentication failed (do not set the error object in this case).
      * This value is serialized to JSON and base64 encoded automatically, so you can just return the object
      */
-    data?: {}
+    data?: object
   }
 
   export interface SMTPServerSession {
@@ -225,27 +236,27 @@ declare module 'smtp-server' {
     /**
      * The callback to handle authentications (see details https://github.com/andris9/smtp-server#handling-authentication)
      */
-    onAuth?: (auth: SMTPServerAuthentication, session: SMTPServerSession, callback: (err?: Error | null, response?: SMTPServerAuthenticationResponse) => void) => void
+    onAuth? (auth: SMTPServerAuthentication, session: SMTPServerSession, callback: (err: Error | null, response: SMTPServerAuthenticationResponse) => void): void
     /**
      * The callback to handle the client connection. (see details https://github.com/andris9/smtp-server#validating-client-connection)
      */
-    onConnect?: (session: SMTPServerSession, callback: (err?: Error | null) => void) => void
+    onConnect? (session: SMTPServerSession, callback: (err: Error | null) => void): void
     /**
      * the callback to validate MAIL FROM commands (see details https://github.com/andris9/smtp-server#validating-sender-addresses)
      */
-    onMailFrom?: (address: SMTPServerAddress, session: SMTPServerSession, callback: (err?: Error | null) => void) => void
+    onMailFrom? (address: SMTPServerAddress, session: SMTPServerSession, callback: (err: Error | null) => void): void
     /**
      * The callback to validate RCPT TO commands (see details https://github.com/andris9/smtp-server#validating-recipient-addresses)
      */
-    onRcptTo?: (address: SMTPServerAddress, session: SMTPServerSession, callback: (err?: Error | null) => void) => void
+    onRcptTo? (address: SMTPServerAddress, session: SMTPServerSession, callback: (err: Error | null) => void): void
     /**
      * the callback to handle incoming messages (see details https://github.com/andris9/smtp-server#processing-incoming-message)
      */
-    onData?: (stream: NodeJS.ReadableStream, session: SMTPServerSession, callback: (err?: Error | null) => void) => void
+    onData? (stream: Readable, session: SMTPServerSession, callback: (err: Error | null) => void): void
     /**
      * the callback that informs about closed client connection
      */
-    onClose?: (session: SMTPServerSession, callback: (err?: Error | null) => void) => void
+    onClose? (session: SMTPServerSession, callback: (err: Error | null) => void): void
   }
 
   /** Creates a SMTP server instance */
@@ -256,9 +267,10 @@ declare module 'smtp-server' {
     connections: Set<any>
     server: net.Server
 
-    constructor (options: SMTPServerOptions)
+    constructor (options?: SMTPServerOptions)
 
     /** Start listening on selected port and interface */
+    /* tslint:disable:unified-signatures */
     listen (port?: number, hostname?: string, backlog?: number, listeningListener?: () => void): net.Server
     listen (port?: number, hostname?: string, listeningListener?: () => void): net.Server
     listen (port?: number, backlog?: number, listeningListener?: () => void): net.Server
@@ -268,26 +280,40 @@ declare module 'smtp-server' {
     listen (options: net.ListenOptions, listeningListener?: () => void): net.Server
     listen (handle: any, backlog?: number, listeningListener?: () => void): net.Server
     listen (handle: any, listeningListener?: () => void): net.Server
+    /* tslint:enable:unified-signatures */
 
     /** Closes the server */
-    close (callback: (err?: Error | null) => void): void
+    close (callback: (err: Error | null) => void): void
 
     updateSecureContext (options: tls.TlsOptions): void
 
     /** Authentication handler. Override this */
-    onAuth (auth: SMTPServerAuthentication, session: SMTPServerSession, callback: (err?: Error | null, response?: SMTPServerAuthenticationResponse) => void): void
-    onClose (session: SMTPServerSession, callback: (err?: Error | null) => void): void
-    onConnect (session: SMTPServerSession, callback: (err?: Error | null) => void): void
-    onData (stream: NodeJS.ReadableStream, session: SMTPServerSession, callback: (err?: Error | null) => void): void
-    onMailFrom (address: SMTPServerAddress, session: SMTPServerSession, callback: (err?: Error | null) => void): void
-    onRcptTo (address: SMTPServerAddress, session: SMTPServerSession, callback: (err?: Error | null) => void): void
+    onAuth (auth: SMTPServerAuthentication, session: SMTPServerSession, callback: (err: Error | null, response: SMTPServerAuthenticationResponse) => void): void
+    onClose (session: SMTPServerSession, callback: (err: Error | null) => void): void
+    onConnect (session: SMTPServerSession, callback: (err: Error | null) => void): void
+    onData (stream: Readable, session: SMTPServerSession, callback: (err: Error | null) => void): void
+    onMailFrom (address: SMTPServerAddress, session: SMTPServerSession, callback: (err: Error | null) => void): void
+    onRcptTo (address: SMTPServerAddress, session: SMTPServerSession, callback: (err: Error | null) => void): void
 
-    addListener (event: 'error' | 'close', listener: (err: Error) => void): this
-    emit (event: 'error' | 'close', error: Error): boolean
-    on (event: 'error' | 'close', listener: (err: Error) => void): this
-    once (event: 'error' | 'close', listener: (err: Error) => void): this
-    prependListener (event: 'error' | 'close', listener: (err: Error) => void): this
-    prependOnceListener (event: 'error' | 'close', listener: (err: Error) => void): this
-    listeners (event: 'error' | 'close'): Array<(err: Error) => void>
+    addListener (event: 'close', listener: () => void): this
+    addListener (event: 'error', listener: (err: Error) => void): this
+
+    emit (event: 'close'): boolean
+    emit (event: 'error', error: Error): boolean
+
+    on (event: 'close', listener: () => void): this
+    on (event: 'error', listener: (err: Error) => void): this
+
+    once (event: 'close', listener: () => void): this
+    once (event: 'error', listener: (err: Error) => void): this
+
+    prependListener (event: 'close', listener: () => void): this
+    prependListener (event: 'error', listener: (err: Error) => void): this
+
+    prependOnceListener (event: 'close', listener: () => void): this
+    prependOnceListener (event: 'error', listener: (err: Error) => void): this
+
+    listeners (event: 'close'): Array<() => void>
+    listeners (event: 'error'): Array<(err: Error) => void>
   }
 }

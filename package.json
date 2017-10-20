@@ -23,15 +23,16 @@
     "node": ">=5.0.0"
   },
   "dependencies": {
-    "promise-readable": "^2.0.0",
+    "promise-readable": "^2.1.0",
     "smtp-server": "^3.3.0"
   },
   "devDependencies": {
-    "@types/node": "^8.0.33",
+    "@types/node": "^8.0.46",
+    "@types/nodemailer": "^3.1.4",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "onchange": "^3.2.1",
-    "promise-socket": "^2.0.1",
+    "promise-socket": "^2.0.2",
     "snazzy": "^7.0.0",
     "standard": "^10.0.3",
     "tap": "^10.7.2",

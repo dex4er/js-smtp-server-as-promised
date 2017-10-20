@@ -2,6 +2,8 @@
 
 import * as fs from 'fs'
 import { PromiseReadable } from 'promise-readable'
+import { Readable } from 'stream'
+
 import { SMTPServerAddress, SMTPServerAsPromised, SMTPServerAsPromisedOptions, SMTPServerSession } from '../lib/smtp-server-as-promised'
 
 interface ArgvOptions {
@@ -39,7 +41,7 @@ async function onRcptTo (to: SMTPServerAddress, session: Session): Promise<void>
   console.info(`[${session.id}] onRcptTo ${to.address}`)
 }
 
-async function onData (stream: PromiseReadable<NodeJS.ReadableStream>, session: Session): Promise<void> {
+async function onData (stream: PromiseReadable<Readable>, session: Session): Promise<void> {
   console.info(`[${session.id}] onData started`)
 
   const message = await stream.readAll()

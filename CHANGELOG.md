@@ -2,7 +2,8 @@
 
 ## v2.0.3 2017-10-20
 
-  * Typescript: use typings from DefinitelyTyped.
+  * Typescript: onData stream is Readable.
+  * Typescript: use @types/nodemailer@4.1.0.
 
 ## v2.0.2 2017-10-09
 

@@ -1,12 +1,12 @@
 /// <reference types="node" />
 
 import * as net from 'net'
+export { Logger, LoggerLevel } from 'nodemailer/lib/shared'
 import { PromiseReadable } from 'promise-readable'
+import { Readable } from 'stream'
 import * as tls from 'tls'
 
 import { SMTPServer, SMTPServerAddress, SMTPServerAuthentication, SMTPServerAuthenticationResponse, SMTPServerOptions, SMTPServerSession } from 'smtp-server'
-
-export { Logger, LoggerLevel } from 'nodemailer/lib/shared'
 
 export * from 'smtp-server'
 
@@ -23,7 +23,7 @@ export interface SMTPServerAsPromisedOptions extends SMTPServerOptions {
   onAuth?: (auth: SMTPServerAuthentication, session: SMTPServerSession) => Promise<SMTPServerAuthenticationResponse>
   onClose?: (session: SMTPServerSession) => Promise<void>
   onConnect?: (session: SMTPServerSession) => Promise<void>
-  onData?: (stream: NodeJS.ReadableStream | PromiseReadable<NodeJS.ReadableStream>, session: SMTPServerSession) => Promise<void>
+  onData?: (stream: Readable | PromiseReadable<Readable>, session: SMTPServerSession) => Promise<void>
   onMailFrom?: (address: SMTPServerAddress, session: SMTPServerSession) => Promise<void>
   onRcptTo?: (address: SMTPServerAddress, session: SMTPServerSession) => Promise<void>
   onError?: (error: Error) => Promise<void>

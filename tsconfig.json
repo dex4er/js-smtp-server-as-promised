@@ -5,9 +5,6 @@
     "noImplicitAny": true,
     "noImplicitThis": true,
     "strict": true,
-    "strictNullChecks": true,
-    "typeRoots": [
-      "./typings"
-    ]
+    "strictNullChecks": true
   }
 }

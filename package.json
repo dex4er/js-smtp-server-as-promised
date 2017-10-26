@@ -1,6 +1,6 @@
 {
   "name": "smtp-server-as-promised",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "Promisify smtp-server module",
   "main": "lib/smtp-server-as-promised.js",
   "typings": "lib/smtp-server-as-promised.d.ts",
@@ -27,8 +27,9 @@
     "smtp-server": "^3.3.0"
   },
   "devDependencies": {
-    "@types/node": "^8.0.46",
-    "@types/nodemailer": "^4.1.0",
+    "@types/node": "^8.0.47",
+    "@types/nodemailer": "^4.2.0",
+    "@types/smtp-server": "^3.3.0",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "onchange": "^3.2.1",

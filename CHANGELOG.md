@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.0.4 2017-10-24
+
+  * Typescript: typings from DefinitelyTyped.
+
 ## v2.0.3 2017-10-20
 
   * Typescript: onData stream is Readable.

@@ -1,4 +1,6 @@
 /// <reference types="node" />
+/// <reference types="nodemailer" />
+/// <reference types="smtp-server" />
 
 import * as net from 'net'
 export { Logger, LoggerLevel } from 'nodemailer/lib/shared'

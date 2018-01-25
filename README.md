@@ -7,10 +7,6 @@ API is the same as for `smtp-server`, except `listen` method which return
 [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 object and callback options which are `Promise` objects.
 
-Additionally, `stream` argument for `onData` promise is changed to
-[`PromiseReadable`](https://www.npmjs.com/package/promise-readable) object if
-`options.usePromiseReadable` is `true`.
-
 ### Requirements
 
 This module requires Node >= 5. For Node < 6 `--harmony` flag is required.
@@ -48,7 +44,6 @@ _Example:_
 ```js
 const server = new SMTPServerAsPromised({
   port: 2525,
-  usePromiseReadable: true,
   onConnect, onMailFrom, onData, onError
 })
 ```
@@ -102,21 +97,9 @@ async function onRcptTo (to, session) {
 }
 ```
 
-##### usePromiseReadable
-
-```js
-options.usePromiseReadable = true
-````
-
-Callback handler `onData` provides `stream` object as an instance of
-[`PromiseReadable`](https://www.npmjs.com/package/promise-readable) class if
-`options.usePromiseReadable` options is `true`
-
 ##### onData
 
 ```js
-const server = new SMTPServerAsPromised({usePromiseReadable: true, onData})
-
 async function onData (stream, session) {
   console.log(`[${session.id}] onData started`)
   session.messageLength = 0
@@ -132,7 +115,25 @@ async function onData (stream, session) {
 
 `stream` object is a standard
 [`stream.Readable`](https://nodejs.org/api/stream.html#stream_class_stream_readable)
-object if `options.usePromiseReadable` is `false`.
+object.
+
+Warning: if an error occures in `onData` handler, stream have to be consumed
+before return from function.
+
+_Example_:
+
+```js
+const { NullWritable } = require('null-writable')
+
+async function onData (stream, session) {
+  try {
+    throw new Error('Something bad happened')
+  } catch (e) {
+    stream.pipe(new NullWritable())  // read it to the end
+    throw e  // rethrow original error
+  }
+}
+```
 
 ##### onError
 

@@ -1,6 +1,6 @@
 # Changelog
 
-## v2.1.0 2018-01-25
+## v3.0.0 2018-01-25
 
   * Removed `usePromiseReadable` option. `onData` handler gives `Readable`
     stream always.

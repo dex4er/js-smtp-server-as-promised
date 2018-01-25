@@ -11,7 +11,7 @@ interface ArgvOptions {
 }
 
 interface Session extends SMTPServerSession {
-  messageLength: number
+  messageLength?: number
 }
 
 async function onConnect (session: Session) {
@@ -41,10 +41,11 @@ async function onRcptTo (to: SMTPServerAddress, session: Session): Promise<void>
   console.info(`[${session.id}] onRcptTo ${to.address}`)
 }
 
-async function onData (stream: PromiseReadable<Readable>, session: Session): Promise<void> {
+async function onData (stream: Readable, session: Session): Promise<void> {
   console.info(`[${session.id}] onData started`)
 
-  const message = await stream.readAll()
+  const promiseStream = new PromiseReadable(stream)
+  const message = await promiseStream.readAll()
   console.info(`[${session.id}] onData read\n${message}`)
 
   session.messageLength = message ? message.length : 0
@@ -71,8 +72,7 @@ async function main () {
     onError,
     onMailFrom,
     onRcptTo,
-    port: 2525,
-    usePromiseReadable: true
+    port: 2525
   }
 
   const userOptions: ArgvOptions = Object.assign({}, ...process.argv.slice(2).map((a) => a.split('=')).map(([k, v]) => ({ [k]: v })))

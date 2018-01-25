@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.1.0 2018-01-25
+
+  * Removed `usePromiseReadable` option. `onData` handler gives `Readable`
+    stream always.
+
 ## v2.0.4 2017-10-24
 
   * Typescript: typings from DefinitelyTyped.

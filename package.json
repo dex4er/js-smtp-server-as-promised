@@ -1,6 +1,6 @@
 {
   "name": "smtp-server-as-promised",
-  "version": "2.0.4",
+  "version": "2.1.0",
   "description": "Promisify smtp-server module",
   "main": "lib/smtp-server-as-promised.js",
   "typings": "lib/smtp-server-as-promised.d.ts",
@@ -23,7 +23,6 @@
     "node": ">=5.0.0"
   },
   "dependencies": {
-    "promise-readable": "^2.1.0",
     "smtp-server": "^3.3.0"
   },
   "devDependencies": {
@@ -33,6 +32,7 @@
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "onchange": "^3.2.1",
+    "promise-readable": "^2.1.0",
     "promise-socket": "^2.0.2",
     "snazzy": "^7.0.0",
     "standard": "^10.0.3",

@@ -4,7 +4,6 @@
 
 import * as net from 'net'
 export { Logger, LoggerLevel } from 'nodemailer/lib/shared'
-import { PromiseReadable } from 'promise-readable'
 import { Readable } from 'stream'
 import * as tls from 'tls'
 
@@ -20,12 +19,11 @@ export interface SMTPServerAsPromisedServerAddress {
 
 export interface SMTPServerAsPromisedOptions extends SMTPServerOptions {
   port?: number
-  usePromiseReadable?: boolean
 
   onAuth?: (auth: SMTPServerAuthentication, session: SMTPServerSession) => Promise<SMTPServerAuthenticationResponse>
   onClose?: (session: SMTPServerSession) => Promise<void>
   onConnect?: (session: SMTPServerSession) => Promise<void>
-  onData?: (stream: Readable | PromiseReadable<Readable>, session: SMTPServerSession) => Promise<void>
+  onData?: (stream: Readable, session: SMTPServerSession) => Promise<void>
   onMailFrom?: (address: SMTPServerAddress, session: SMTPServerSession) => Promise<void>
   onRcptTo?: (address: SMTPServerAddress, session: SMTPServerSession) => Promise<void>
   onError?: (error: Error) => Promise<void>

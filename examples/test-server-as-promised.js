@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
 const fs = require('fs')
+const { PromiseReadable } = require('promise-readable')
+
 const { SMTPServerAsPromised } = require('../lib/smtp-server-as-promised')
 
 async function onConnect (session) {
@@ -33,7 +35,8 @@ async function onRcptTo (to, session) {
 async function onData (stream, session) {
   console.info(`[${session.id}] onData started`)
 
-  const message = await stream.readAll()
+  const promiseStream = new PromiseReadable(stream)
+  const message = await promiseStream.readAll()
   console.info(`[${session.id}] onData read\n${message}`)
 
   session.messageLength = message ? message.length : 0
@@ -60,8 +63,7 @@ async function main () {
     onError,
     onMailFrom,
     onRcptTo,
-    port: 2525,
-    usePromiseReadable: true
+    port: 2525
   }
 
   const userOptions = Object.assign({}, ...process.argv.slice(2).map((a) => a.split('=')).map(([k, v]) => ({ [k]: v })))

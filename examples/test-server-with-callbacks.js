@@ -5,8 +5,25 @@
 const SMTPServer = require('smtp-server').SMTPServer
 
 // Usage: node server.js opt1=value1 opt2=value2...
-const options = Object.assign({})//, ...process.argv.slice(2).map(a => a.split('=')).map(([k, v]) => ({[k]: v})))
-Object.assign(options, { disabledCommands: ['AUTH'], onConnect, onMailFrom, onRcptTo, onData, onClose })
+const defaultOptions = {
+  disabledCommands: ['AUTH'],
+  hideSTARTTLS: true,
+  // onAuth,
+  onClose,
+  onConnect,
+  onData,
+  onMailFrom,
+  onRcptTo,
+  port: 2525
+}
+
+const userOptions = Object.assign({}, ...process.argv.slice(2).map((a) => a.split('=')).map(([k, v]) => ({ [k]: v })))
+
+const options = { ...defaultOptions, ...userOptions }
+
+options.ca = typeof options.ca === 'string' ? fs.readFileSync(options.ca) : undefined
+options.cert = typeof options.cert === 'string' ? fs.readFileSync(options.cert) : undefined
+options.key = typeof options.key === 'string' ? fs.readFileSync(options.key) : undefined
 
 function onConnect (session, callback) {
   console.log(`[${session.id}] onConnect`)

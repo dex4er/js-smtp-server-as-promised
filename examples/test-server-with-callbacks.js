@@ -2,6 +2,7 @@
 
 'use strict'
 
+const fs = require('fs')
 const SMTPServer = require('smtp-server').SMTPServer
 
 // Usage: node server.js opt1=value1 opt2=value2...

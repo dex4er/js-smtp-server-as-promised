@@ -2,6 +2,7 @@
 
 ## v3.1.0 2018-02-09
 
+* Clean up listeners after `close`.
 * Typescript: support `import foo from 'foo'` syntax.
 
 ## v3.0.0 2018-01-25

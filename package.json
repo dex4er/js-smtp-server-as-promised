@@ -31,6 +31,7 @@
     "@types/smtp-server": "^3.3.0",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
+    "null-writable": "^0.2.0",
     "onchange": "^3.2.1",
     "promise-readable": "^2.1.0",
     "promise-socket": "^2.0.2",

@@ -8,10 +8,10 @@ const chaiAsPromised = require('chai-as-promised')
 chai.use(chaiAsPromised)
 chai.should()
 
-Feature('Test smtp-server-as-promised module', () => {
-  const SMTPServerAsPromised = require('../lib/smtp-server-as-promised').SMTPServerAsPromised
-  const PromiseSocket = require('promise-socket').PromiseSocket
+const SMTPServerAsPromised = require('../lib/smtp-server-as-promised')
+const PromiseSocket = require('promise-socket')
 
+Feature('Test smtp-server-as-promised module', () => {
   const crlf = '\x0d\x0a'
 
   function onAuth (auth, session) {

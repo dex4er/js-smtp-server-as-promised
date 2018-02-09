@@ -124,7 +124,7 @@ before return from function.
 _Example_:
 
 ```js
-const { NullWritable } = require('null-writable')
+const NullWritable = require('null-writable')
 
 async function onData (stream, session) {
   try {

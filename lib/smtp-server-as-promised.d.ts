@@ -1,11 +1,10 @@
 /// <reference types="node" />
 /// <reference types="nodemailer" />
-/// <reference types="smtp-server" />
 
-import * as net from 'net'
+import net from 'net'
 export { Logger, LoggerLevel } from 'nodemailer/lib/shared'
 import { Readable } from 'stream'
-import * as tls from 'tls'
+import tls from 'tls'
 
 import { SMTPServer, SMTPServerAddress, SMTPServerAuthentication, SMTPServerAuthenticationResponse, SMTPServerOptions, SMTPServerSession } from 'smtp-server'
 

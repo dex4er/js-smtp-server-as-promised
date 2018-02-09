@@ -1,7 +1,8 @@
 #!/usr/bin/env ts-node
 
-import * as fs from 'fs'
-import { PromiseReadable } from 'promise-readable'
+import fs from 'fs'
+import NullWritable from 'null-writable'
+import PromiseReadable from 'promise-readable'
 import { Readable } from 'stream'
 
 import { SMTPServerAddress, SMTPServerAsPromised, SMTPServerAsPromisedOptions, SMTPServerSession } from '../lib/smtp-server-as-promised'
@@ -44,12 +45,17 @@ async function onRcptTo (to: SMTPServerAddress, session: Session): Promise<void>
 async function onData (stream: Readable, session: Session): Promise<void> {
   console.info(`[${session.id}] onData started`)
 
-  const promiseStream = new PromiseReadable(stream)
-  const message = await promiseStream.readAll()
-  console.info(`[${session.id}] onData read\n${message}`)
+  try {
+    const promiseStream = new PromiseReadable(stream)
+    const message = await promiseStream.readAll()
+    console.info(`[${session.id}] onData read\n${message}`)
 
-  session.messageLength = message ? message.length : 0
-  console.info(`[${session.id}] onData finished after reading ${session.messageLength} bytes`)
+    session.messageLength = message ? message.length : 0
+    console.info(`[${session.id}] onData finished after reading ${session.messageLength} bytes`)
+  } catch (e) {
+    stream.pipe(new NullWritable())  // read it to the end
+    throw e  // rethrow original error
+  }
 }
 
 async function onClose (session: Session): Promise<void> {
@@ -60,7 +66,7 @@ async function onError (err: Error): Promise<void> {
   console.info('Server error:', err)
 }
 
-async function main () {
+async function main (): Promise<void> {
   // Usage: node server.js opt1=value1 opt2=value2...
   const defaultOptions: SMTPServerAsPromisedOptions = {
     disabledCommands: ['AUTH'],
@@ -88,4 +94,4 @@ async function main () {
   console.info(`Listening on [${address.address}]:${address.port}`)
 }
 
-main().catch(console.error)
+void main().catch(console.error)

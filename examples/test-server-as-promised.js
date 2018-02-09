@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 
 const fs = require('fs')
-const { PromiseReadable } = require('promise-readable')
+const NullWritable = require('null-writable')
+const PromiseReadable = require('promise-readable')
 
-const { SMTPServerAsPromised } = require('../lib/smtp-server-as-promised')
+const SMTPServerAsPromised = require('../lib/smtp-server-as-promised')
 
 async function onConnect (session) {
   console.info(`[${session.id}] onConnect`)
@@ -35,12 +36,17 @@ async function onRcptTo (to, session) {
 async function onData (stream, session) {
   console.info(`[${session.id}] onData started`)
 
-  const promiseStream = new PromiseReadable(stream)
-  const message = await promiseStream.readAll()
-  console.info(`[${session.id}] onData read\n${message}`)
+  try {
+    const promiseStream = new PromiseReadable(stream)
+    const message = await promiseStream.readAll()
+    console.info(`[${session.id}] onData read\n${message}`)
 
-  session.messageLength = message ? message.length : 0
-  console.info(`[${session.id}] onData finished after reading ${session.messageLength} bytes`)
+    session.messageLength = message ? message.length : 0
+    console.info(`[${session.id}] onData finished after reading ${session.messageLength} bytes`)
+  } catch (e) {
+    stream.pipe(new NullWritable())  // read it to the end
+    throw e  // rethrow original error
+  }
 }
 
 async function onClose (session) {

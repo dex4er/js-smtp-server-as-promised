@@ -1,37 +1,38 @@
-## smtp-server-as-promised
+# smtp-server-as-promised
 
 [![Build Status](https://secure.travis-ci.org/dex4er/js-smtp-server-as-promised.svg)](http://travis-ci.org/dex4er/js-smtp-server-as-promised) [![Coverage Status](https://coveralls.io/repos/github/dex4er/js-smtp-server-as-promised/badge.svg)](https://coveralls.io/github/dex4er/js-smtp-server-as-promised) [![npm](https://img.shields.io/npm/v/smtp-server-as-promised.svg)](https://www.npmjs.com/package/smtp-server-as-promised)
 
-This module provides promisified version of [`smtp-server`](https://www.npmjs.com/package/smtp-server) module. The
-API is the same as for `smtp-server`, except `listen` method which return
+This module provides promisified version of
+[`smtp-server`](https://www.npmjs.com/package/smtp-server) module. The API is
+the same as for `smtp-server`, except `listen` method which return
 [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 object and callback options which are `Promise` objects.
 
-### Requirements
+## Requirements
 
 This module requires Node >= 5. For Node < 6 `--harmony` flag is required.
 
-### Installation
+## Installation
 
 ```shell
 npm install smtp-server-as-promised
 ```
 
-### Usage
+## Usage
 
 `smtp-server-as-promised` can be used like standard `smtp-server` module:
 
 ```js
-const { SMTPServerAsPromised } = require('smtp-server-as-promised')
+const SMTPServerAsPromised = require('smtp-server-as-promised')
 ```
 
 _Typescript:_
 
 ```ts
-import { SMTPServerAsPromised } from 'smtp-server-as-promised'
+import SMTPServerAsPromised from 'smtp-server-as-promised'
 ```
 
-#### constructor
+### constructor
 
 ```js
 const server = new SMTPServerAsPromised(options)
@@ -51,7 +52,7 @@ const server = new SMTPServerAsPromised({
 Options are the same as for original `smtp-server` constructor, except that
 callback handlers are `Promise` objects or `async` functions:
 
-##### onConnect
+### onConnect
 
 ```js
 async function onConnect (session) {
@@ -59,7 +60,7 @@ async function onConnect (session) {
 }
 ```
 
-##### onAuth
+### onAuth
 
 ```js
 async function onAuth (auth, session) {
@@ -73,7 +74,7 @@ async function onAuth (auth, session) {
 
 This method must return the object with `user` property.
 
-##### onMailFrom
+### onMailFrom
 
 ```js
 async function onMailFrom (from, session) {
@@ -86,7 +87,7 @@ async function onMailFrom (from, session) {
 
 An errors can be thrown and then are handled by server in response message.
 
-##### onRcptTo
+### onRcptTo
 
 ```js
 async function onRcptTo (to, session) {
@@ -97,7 +98,7 @@ async function onRcptTo (to, session) {
 }
 ```
 
-##### onData
+### onData
 
 ```js
 async function onData (stream, session) {
@@ -135,7 +136,7 @@ async function onData (stream, session) {
 }
 ```
 
-##### onError
+### onError
 
 ```js
 async function onError (e) {
@@ -143,7 +144,7 @@ async function onError (e) {
 }
 ```
 
-#### listen
+### listen
 
 ```js
 const promise = server.listen(port[,host][,backlog])
@@ -161,7 +162,7 @@ async function main () {
 }
 ```
 
-#### close
+### close
 
 ```js
 const promise = server.close()
@@ -179,7 +180,7 @@ async function main () {
 }
 ```
 
-#### updateSecureContext
+### updateSecureContext
 
 ```js
 server.updateSecureContext(options)
@@ -193,7 +194,7 @@ _Example:_
 server.updateSecureContext({ key: tlsKeyPem })
 ```
 
-### License
+## License
 
 Copyright (c) 2016-2018 Piotr Roszatycki <piotr.roszatycki@gmail.com>
 

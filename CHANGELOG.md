@@ -1,5 +1,10 @@
 # Changelog
 
+## v3.1.1 2018-02-13
+
+* Typescript: `updateSecureOption` with `TlsServerOptions` type as an
+  argument.
+
 ## v3.1.0 2018-02-09
 
 * Clean up listeners after `close`.

@@ -1,5 +1,9 @@
 # Changelog
 
+## v3.3.1 2018-02-13
+
+* Typescript: back to `TlsOptions` type.
+
 ## v3.3.0 2018-02-13
 
 * Accept `0` as a port number.

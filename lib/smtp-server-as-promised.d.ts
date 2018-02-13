@@ -47,7 +47,7 @@ export class SMTPServerAsPromised {
 
   close (): Promise<void>
 
-  updateSecureContext (options: tls.TlsServerOptions): void
+  updateSecureContext (options: tls.TlsOptions): void
 }
 
 export default SMTPServerAsPromised

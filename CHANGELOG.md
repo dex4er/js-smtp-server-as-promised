@@ -1,5 +1,9 @@
 # Changelog
 
+## v3.3.0 2018-02-13
+
+* Accept `0` as a port number.
+
 ## v3.2.0 2018-02-13
 
 * Typescript: `host`, `port` and `backlog` are part of

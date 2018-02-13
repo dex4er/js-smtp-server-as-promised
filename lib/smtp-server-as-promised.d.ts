@@ -17,7 +17,9 @@ export interface SMTPServerAsPromisedServerAddress {
 }
 
 export interface SMTPServerAsPromisedOptions extends SMTPServerOptions {
+  host?: string
   port?: number
+  backlog?: number
 
   onAuth?: (auth: SMTPServerAuthentication, session: SMTPServerSession) => Promise<SMTPServerAuthenticationResponse>
   onClose?: (session: SMTPServerSession) => Promise<void>

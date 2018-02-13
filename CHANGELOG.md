@@ -1,5 +1,10 @@
 # Changelog
 
+## v3.2.0 2018-02-13
+
+* Typescript: `host`, `port` and `backlog` are part of
+  `SMTPServerAsPromisedOptions`.
+
 ## v3.1.1 2018-02-13
 
 * Typescript: `updateSecureOption` with `TlsServerOptions` type as an

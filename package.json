@@ -1,6 +1,6 @@
 {
   "name": "smtp-server-as-promised",
-  "version": "3.1.1",
+  "version": "3.2.0",
   "description": "Promisify smtp-server module",
   "main": "lib/smtp-server-as-promised.js",
   "typings": "lib/smtp-server-as-promised.d.ts",

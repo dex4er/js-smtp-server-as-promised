@@ -49,8 +49,9 @@ const server = new SMTPServerAsPromised({
 })
 ```
 
-Options are the same as for original `smtp-server` constructor, except that
-callback handlers are `Promise` objects or `async` functions:
+Options are the same as for original `smtp-server` constructor. Additionally the
+default `host`, `port` and `backlog` might be provided for `listen` method.
+Callback handlers are `Promise` objects or `async` functions:
 
 ### onConnect
 

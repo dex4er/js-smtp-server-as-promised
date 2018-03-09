@@ -1,5 +1,9 @@
 # Changelog
 
+## v3.3.2 2018-03-09
+
+* Typescript: use @types/nodemailer@4.6.0.
+
 ## v3.3.1 2018-02-13
 
 * Typescript: back to `TlsOptions` type.

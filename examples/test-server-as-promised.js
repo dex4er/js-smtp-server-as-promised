@@ -44,8 +44,8 @@ async function onData (stream, session) {
     session.messageLength = message ? message.length : 0
     console.info(`[${session.id}] onData finished after reading ${session.messageLength} bytes`)
   } catch (e) {
-    stream.pipe(new NullWritable())  // read it to the end
-    throw e  // rethrow original error
+    stream.pipe(new NullWritable()) // read it to the end
+    throw e // rethrow original error
   }
 }
 

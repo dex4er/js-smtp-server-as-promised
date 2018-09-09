@@ -1,6 +1,8 @@
 # smtp-server-as-promised
 
+<!-- markdownlint-disable MD013 -->
 [![Build Status](https://secure.travis-ci.org/dex4er/js-smtp-server-as-promised.svg)](http://travis-ci.org/dex4er/js-smtp-server-as-promised) [![Coverage Status](https://coveralls.io/repos/github/dex4er/js-smtp-server-as-promised/badge.svg)](https://coveralls.io/github/dex4er/js-smtp-server-as-promised) [![npm](https://img.shields.io/npm/v/smtp-server-as-promised.svg)](https://www.npmjs.com/package/smtp-server-as-promised)
+<!-- markdownlint-enable MD013 -->
 
 This module provides promisified version of
 [`smtp-server`](https://www.npmjs.com/package/smtp-server) module. The API is
@@ -10,7 +12,7 @@ object and callback options which are `Promise` objects.
 
 ## Requirements
 
-This module requires Node >= 5. For Node < 6 `--harmony` flag is required.
+This module requires Node >= 6.
 
 ## Installation
 
@@ -18,12 +20,30 @@ This module requires Node >= 5. For Node < 6 `--harmony` flag is required.
 npm install smtp-server-as-promised
 ```
 
+_Additionally for Typescript:_
+
+```shell
+npm install -D @types/node @types/nodemailer
+```
+
+Transpiling this module with own settings in `tsconfig.json`:
+
+```json
+{
+  "compilerOptions": {
+    "paths": {
+      "smtp-server-as-promised": ["node_modules/smtp-server-as-promised/src/smtp-server-as-promised"]
+    }
+  }
+}
+```
+
 ## Usage
 
 `smtp-server-as-promised` can be used like standard `smtp-server` module:
 
 ```js
-const SMTPServerAsPromised = require('smtp-server-as-promised')
+const { SMTPServerAsPromised } = require('smtp-server-as-promised')
 ```
 
 _Typescript:_
@@ -44,14 +64,12 @@ _Example:_
 
 ```js
 const server = new SMTPServerAsPromised({
-  port: 2525,
   onConnect, onMailFrom, onData, onError
 })
 ```
 
-Options are the same as for original `smtp-server` constructor. Additionally the
-default `host`, `port` and `backlog` might be provided for `listen` method.
-Callback handlers are `Promise` objects or `async` functions:
+Options are the same as for original `smtp-server` constructor. Callback
+handlers are `Promise` objects or `async` functions:
 
 ### onConnect
 
@@ -63,6 +81,8 @@ async function onConnect (session) {
 
 ### onAuth
 
+<!-- markdownlint-disable MD013 -->
+
 ```js
 async function onAuth (auth, session) {
   if (auth.method === 'PLAIN' && auth.username === 'username' && auth.password === 'password') {
@@ -72,6 +92,8 @@ async function onAuth (auth, session) {
   }
 }
 ```
+
+<!-- markdownlint-enable MD013 -->
 
 This method must return the object with `user` property.
 
@@ -101,6 +123,8 @@ async function onRcptTo (to, session) {
 
 ### onData
 
+<!-- markdownlint-disable MD013 -->
+
 ```js
 async function onData (stream, session) {
   console.log(`[${session.id}] onData started`)
@@ -115,6 +139,8 @@ async function onData (stream, session) {
 }
 ```
 
+<!-- markdownlint-enable MD013 -->
+
 `stream` object is a standard
 [`stream.Readable`](https://nodejs.org/api/stream.html#stream_class_stream_readable)
 object.
@@ -125,7 +151,7 @@ before return from function.
 _Example_:
 
 ```js
-const NullWritable = require('null-writable')
+const { NullWritable } = require('null-writable')
 
 async function onData (stream, session) {
   try {
@@ -148,17 +174,18 @@ async function onError (e) {
 ### listen
 
 ```js
-const promise = server.listen(port[,host][,backlog])
+const promise = server.listen(options)
 ```
 
-Start the server instance. This method returns promise which returns `address`
-as its value.
+Start the server instance. Argument is the same as for
+[`net.listen`](https://nodejs.org/api/net.html#net_server_listen_options_callback)
+method. This method returns promise which resolves to `address` value.
 
 _Example:_
 
 ```js
 async function main () {
-  const address = await server.listen(2525)
+  const address = await server.listen({ port: 2525 })
   console.log(`Listening on [${address.address}]:${address.port}`)
 }
 ```

@@ -1,5 +1,11 @@
 # Changelog
 
+## v4.0.0 2018-09-09
+
+* Rewritten in Typescript.
+* Requires Node >= 6
+* Changed syntax for import.
+
 ## v3.3.2 2018-03-09
 
 * Typescript: use @types/nodemailer@4.6.0.

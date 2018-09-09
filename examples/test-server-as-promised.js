@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
 const fs = require('fs')
-const NullWritable = require('null-writable')
-const PromiseReadable = require('promise-readable')
+const { NullWritable } = require('null-writable')
+const { PromiseReadable } = require('promise-readable')
 
-const SMTPServerAsPromised = require('../lib/smtp-server-as-promised')
+const { SMTPServerAsPromised } = require('../lib/smtp-server-as-promised')
 
 async function onConnect (session) {
   console.info(`[${session.id}] onConnect`)
@@ -83,7 +83,7 @@ async function main () {
   options.key = typeof options.key === 'string' ? fs.readFileSync(options.key) : undefined
 
   const server = new SMTPServerAsPromised(options)
-  const address = await server.listen()
+  const address = await server.listen(options)
   console.info(`Listening on [${address.address}]:${address.port}`)
 }
 

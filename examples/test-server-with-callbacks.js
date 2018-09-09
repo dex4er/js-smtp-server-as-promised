@@ -71,7 +71,7 @@ function main () {
     console.log(`Server got error:`, e)
   })
 
-  server.listen(options.port, () => {
+  server.listen(options, () => {
     const address = server.server.address()
     console.log(`Listening on [${address.address}]:${address.port}`)
   })

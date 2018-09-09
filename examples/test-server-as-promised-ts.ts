@@ -1,11 +1,12 @@
 #!/usr/bin/env ts-node
 
 import fs from 'fs'
+import net from 'net'
 import NullWritable from 'null-writable'
 import PromiseReadable from 'promise-readable'
 import { Readable } from 'stream'
 
-import { SMTPServerAddress, SMTPServerAsPromised, SMTPServerAsPromisedOptions, SMTPServerSession } from '../lib/smtp-server-as-promised'
+import { SMTPServerAddress, SMTPServerAsPromised, SMTPServerAsPromisedOptions, SMTPServerSession } from '../src/smtp-server-as-promised'
 
 interface ArgvOptions {
   [key: string]: string
@@ -15,7 +16,7 @@ interface Session extends SMTPServerSession {
   messageLength?: number
 }
 
-async function onConnect (session: Session) {
+async function onConnect (session: Session): Promise<void> {
   console.info(`[${session.id}] onConnect`)
 }
 
@@ -70,7 +71,7 @@ async function onError (err: Error): Promise<void> {
 
 async function main (): Promise<void> {
   // Usage: node server.js opt1=value1 opt2=value2...
-  const defaultOptions: SMTPServerAsPromisedOptions = {
+  const defaultOptions: SMTPServerAsPromisedOptions & net.ListenOptions = {
     disabledCommands: ['AUTH'],
     hideSTARTTLS: true,
     // onAuth,
@@ -85,14 +86,14 @@ async function main (): Promise<void> {
 
   const userOptions: ArgvOptions = Object.assign({}, ...process.argv.slice(2).map((a) => a.split('=')).map(([k, v]) => ({ [k]: v })))
 
-  const options: SMTPServerAsPromisedOptions = { ...defaultOptions, ...userOptions }
+  const options = { ...defaultOptions, ...userOptions } as SMTPServerAsPromisedOptions & net.ListenOptions
 
   options.ca = typeof options.ca === 'string' ? fs.readFileSync(options.ca) : undefined
   options.cert = typeof options.cert === 'string' ? fs.readFileSync(options.cert) : undefined
   options.key = typeof options.key === 'string' ? fs.readFileSync(options.key) : undefined
 
   const server = new SMTPServerAsPromised(options)
-  const address = await server.listen()
+  const address = await server.listen(options)
   console.info(`Listening on [${address.address}]:${address.port}`)
 }
 

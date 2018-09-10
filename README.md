@@ -222,6 +222,14 @@ _Example:_
 server.updateSecureContext({ key: tlsKeyPem })
 ```
 
+### destroy
+
+```js
+await connection.destroy()
+```
+
+Manually free resources taken by server.
+
 ## License
 
 Copyright (c) 2016-2018 Piotr Roszatycki <piotr.roszatycki@gmail.com>

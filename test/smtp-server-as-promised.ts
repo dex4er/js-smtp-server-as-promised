@@ -153,7 +153,7 @@ Feature('Test smtp-server-as-promised module', () => {
     })
 
     After(async () => {
-      await server.close()
+      await server.destroy()
     })
   })
 })

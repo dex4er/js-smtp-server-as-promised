@@ -29,7 +29,8 @@ export interface SMTPServerAsPromisedOptions extends SMTPServerOptions {
 export class SMTPServerAsPromised {
   server: SMTPServer
 
-  protected onError?: (error: Error) => Promise<void>
+  protected closed?: boolean = false
+  protected errorHandler?: (error: Error) => Promise<void>
 
   constructor (options: SMTPServerAsPromisedOptions = {}) {
     const smtpSeverOptions: SMTPServerOptions = Object.assign({}, options)
@@ -78,8 +79,8 @@ export class SMTPServerAsPromised {
     this.server = new SMTPServer(smtpSeverOptions)
 
     if (options.onError) {
-      this.onError = options.onError
-      this.server.on('error', this.onError)
+      this.errorHandler = options.onError
+      this.server.on('error', this.errorHandler)
     }
   }
 
@@ -108,19 +109,30 @@ export class SMTPServerAsPromised {
   close (): Promise<void> {
     return new Promise((resolve, reject) => {
       this.server.close((err?: Error | null) => {
+        this.closed = true
+        if (this.errorHandler) {
+          this.server.removeListener('error', this.errorHandler)
+          this.errorHandler = undefined
+        }
         if (err) {
           return reject(err)
+        } else {
+          resolve()
         }
-        if (this.onError) {
-          this.server.removeListener('error', this.onError)
-        }
-        resolve()
       })
     })
   }
 
   updateSecureContext (options: tls.TlsOptions): void {
     this.server.updateSecureContext(options)
+  }
+
+  destroy (): Promise<void> {
+    if (!this.closed) {
+      return this.close()
+    } else {
+      return Promise.resolve()
+    }
   }
 }
 

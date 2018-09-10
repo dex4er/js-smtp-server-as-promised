@@ -1,6 +1,6 @@
 {
   "name": "smtp-server-as-promised",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "description": "Promisify smtp-server module",
   "main": "lib/smtp-server-as-promised.js",
   "typings": "lib/smtp-server-as-promised.d.ts",
@@ -49,6 +49,7 @@
     "nyc": "^13.0.1",
     "promise-readable": "^3.1.5",
     "promise-socket": "^3.1.1",
+    "rimraf": "^2.6.2",
     "semver": "^5.5.1",
     "ts-node": "^7.0.1",
     "tslint": "^5.11.0",
@@ -58,7 +59,7 @@
   "scripts": {
     "build": "tsc --pretty",
     "clean": "rimraf lib",
-    "postpublish": "git tag v$npm_package_version -a -m \"Release $npm_package_version\" && git push --tags",
+    "postpublish": "git tag v$npm_package_version -a -m \"Release v$npm_package_version\" && git push --tags",
     "prepublishOnly": "npm run build",
     "pretest": "npm run build && tsc --pretty -p examples && tsc --pretty -p test && eslint . && tslint -t stylish -p . && tslint -t stylish -p examples && tslint -t stylish -p test && markdownlint \"*.md\"",
     "test": "npm run test:spec",

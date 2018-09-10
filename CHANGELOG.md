@@ -1,5 +1,9 @@
 # Changelog
 
+## v4.1.0 2018-09-10
+
+* New method `destroy`.
+
 ## v4.0.0 2018-09-09
 
 * Rewritten in Typescript.

@@ -2,6 +2,7 @@ import { After, And, Feature, Given, Scenario, Then, When } from './lib/steps'
 
 import { AddressInfo, Socket } from 'net'
 import PromiseSocket from 'promise-socket'
+import semver from 'semver'
 
 import { SMTPServerAsPromised, SMTPServerAuthentication, SMTPServerAuthenticationResponse, SMTPServerSession } from '../src/smtp-server-as-promised'
 
@@ -29,6 +30,7 @@ Feature('Test smtp-server-as-promised module', () => {
   Scenario('Receive one mail', () => {
     let address: AddressInfo
     let client: PromiseSocket<Socket>
+    let lastChunk: Buffer | undefined
     let server: SMTPServerAsPromised
 
     Given('SMTPServerAsPromised object', () => {
@@ -117,13 +119,33 @@ Feature('Test smtp-server-as-promised module', () => {
       chunk!.toString().should.match(/^250 OK: message queued/)
     })
 
-    When('I send QUIT command', async () => {
-      await client.write('QUIT' + crlf)
-    })
+    if (semver.gte(process.version, 'v10.0.0')) {
+      When('I send QUIT command', async () => {
+        await client.write('QUIT' + crlf)
+      })
 
-    Then('I get QUIT response', async () => {
+      Then('I get QUIT response', async () => {
+        const chunk = await client.read()
+        chunk!.toString().should.match(/^221 Bye/)
+      })
+    } else {
+      // Not correct synchronization on Node < 10 because it misses
+      // https://github.com/nodejs/node/commit/9b7a6914a7
+      When('I send QUIT command', async () => {
+        void client.read().then((chunk) => {
+          lastChunk = chunk
+        })
+        await client.write('QUIT' + crlf)
+      })
+
+      Then('I get QUIT response', () => {
+        lastChunk!.toString().should.match(/^221 Bye/)
+      })
+    }
+
+    And('there is nothing more to read', async () => {
       const chunk = await client.read()
-      chunk!.toString().should.match(/^221 Bye/)
+      return (chunk === undefined).should.be.true
     })
 
     After(async () => {

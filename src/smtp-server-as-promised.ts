@@ -71,9 +71,7 @@ export class SMTPServerAsPromised {
     }
     if (options.onClose) {
       const handlerWithPromise = options.onClose
-      const handlerWithCallback = (session: SMTPServerSession, callback: (err?: Error | null) => void) => handlerWithPromise(session)
-        .then(() => callback())
-        .catch((err) => callback(err))
+      const handlerWithCallback = (session: SMTPServerSession) => handlerWithPromise(session)
       smtpSeverOptions.onClose = handlerWithCallback
     }
 

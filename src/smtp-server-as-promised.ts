@@ -3,6 +3,7 @@
 
 import net from 'net'
 export { Logger, LoggerLevel } from 'nodemailer/lib/shared'
+import NullWritable from 'null-writable'
 import { Readable } from 'stream'
 import tls from 'tls'
 
@@ -17,13 +18,13 @@ export interface SMTPServerAsPromisedServerAddress {
 }
 
 export interface SMTPServerAsPromisedOptions extends SMTPServerOptions {
-  onAuth?: (auth: SMTPServerAuthentication, session: SMTPServerSession) => Promise<SMTPServerAuthenticationResponse>
-  onClose?: (session: SMTPServerSession) => Promise<void>
-  onConnect?: (session: SMTPServerSession) => Promise<void>
-  onData?: (stream: Readable, session: SMTPServerSession) => Promise<void>
-  onMailFrom?: (address: SMTPServerAddress, session: SMTPServerSession) => Promise<void>
-  onRcptTo?: (address: SMTPServerAddress, session: SMTPServerSession) => Promise<void>
-  onError?: (error: Error) => Promise<void>
+  onConnect?: never
+  onAuth?: never
+  onMailFrom?: never
+  onRcptTo?: never
+  onData?: never
+  onClose?: never
+  onError?: never
 }
 
 export class SMTPServerAsPromised {
@@ -33,55 +34,36 @@ export class SMTPServerAsPromised {
   protected errorHandler?: (error: Error) => Promise<void>
 
   constructor (options: SMTPServerAsPromisedOptions = {}) {
-    const smtpSeverOptions: SMTPServerOptions = Object.assign({}, options)
+    const newOptions: SMTPServerOptions = {}
 
-    if (options.onConnect) {
-      const handlerWithPromise = options.onConnect
-      const handlerWithCallback = (session: SMTPServerSession, callback: (err?: Error) => void) => handlerWithPromise(session)
-        .then(() => callback())
-        .catch((err) => callback(err))
-      smtpSeverOptions.onConnect = handlerWithCallback
-    }
-    if (options.onAuth) {
-      const handlerWithPromise = options.onAuth
-      const handlerWithCallback = (auth: SMTPServerAuthentication, session: SMTPServerSession, callback: (err: Error | null, response?: SMTPServerAuthenticationResponse) => void) => handlerWithPromise(auth, session)
-        .then((response) => callback(null, response))
-        .catch((err) => callback(err))
-      smtpSeverOptions.onAuth = handlerWithCallback as any
-    }
-    if (options.onMailFrom) {
-      const handlerWithPromise = options.onMailFrom
-      const handlerWithCallback = (address: SMTPServerAddress, session: SMTPServerSession, callback: (err?: Error | null) => void) => handlerWithPromise(address, session)
-        .then(() => callback())
-        .catch((err) => callback(err))
-      smtpSeverOptions.onMailFrom = handlerWithCallback
-    }
-    if (options.onRcptTo) {
-      const handlerWithPromise = options.onRcptTo
-      const handlerWithCallback = (address: SMTPServerAddress, session: SMTPServerSession, callback: (err?: Error | null) => void) => handlerWithPromise(address, session)
-        .then(() => callback())
-        .catch((err) => callback(err))
-      smtpSeverOptions.onRcptTo = handlerWithCallback
-    }
-    if (options.onData) {
-      const handlerWithPromise = options.onData
-      const handlerWithCallback = (stream: Readable, session: SMTPServerSession, callback: (err?: Error | null) => void) => handlerWithPromise(stream, session)
-        .then(() => callback())
-        .catch((err) => callback(err))
-      smtpSeverOptions.onData = handlerWithCallback
-    }
-    if (options.onClose) {
-      const handlerWithPromise = options.onClose
-      const handlerWithCallback = (session: SMTPServerSession) => handlerWithPromise(session)
-      smtpSeverOptions.onClose = handlerWithCallback
-    }
+    newOptions.onConnect = (session: SMTPServerSession, callback: (err?: Error) => void) => this.onConnect(session)
+      .then(() => callback())
+      .catch((err: Error) => callback(err))
 
-    this.server = new SMTPServer(smtpSeverOptions)
+    newOptions.onAuth = (auth: SMTPServerAuthentication, session: SMTPServerSession, callback: (err: Error | null, response?: SMTPServerAuthenticationResponse) => void) => this.onAuth(auth, session)
+        .then((response: SMTPServerAuthenticationResponse) => callback(null, response))
+        .catch((err: Error) => callback(err))
 
-    if (options.onError) {
-      this.errorHandler = options.onError
-      this.server.on('error', this.errorHandler)
-    }
+    newOptions.onMailFrom = (address: SMTPServerAddress, session: SMTPServerSession, callback: (err?: Error | null) => void) => this.onMailFrom(address, session)
+        .then(() => callback())
+        .catch((err: Error) => callback(err))
+
+    newOptions.onRcptTo = (address: SMTPServerAddress, session: SMTPServerSession, callback: (err?: Error | null) => void) => this.onRcptTo(address, session)
+        .then(() => callback())
+        .catch((err: Error) => callback(err))
+
+    newOptions.onData = (stream: Readable, session: SMTPServerSession, callback: (err?: Error | null) => void) => this.onData(stream, session)
+        .then(() => callback())
+        .catch((err: Error) => {
+          stream.pipe(new NullWritable())
+          callback(err)
+        })
+
+    newOptions.onClose = (session: SMTPServerSession) => this.onClose(session)
+
+    this.server = new SMTPServer({ ...options as SMTPServerOptions, ...newOptions })
+
+    this.server.on('error', (err: Error) => this.onError(err))
   }
 
   listen (options: net.ListenOptions = {}): Promise<SMTPServerAsPromisedServerAddress> {
@@ -133,6 +115,35 @@ export class SMTPServerAsPromised {
     } else {
       return Promise.resolve()
     }
+  }
+
+  protected onAuth (auth: SMTPServerAuthentication, session: SMTPServerSession): Promise<SMTPServerAuthenticationResponse> {
+    return Promise.reject(new Error('onAuth method not overriden in subclass'))
+  }
+
+  protected onClose (session: SMTPServerSession): Promise<void> {
+    return Promise.resolve()
+  }
+
+  protected onConnect (session: SMTPServerSession): Promise<void> {
+    return Promise.resolve()
+  }
+
+  protected onData (stream: Readable, session: SMTPServerSession): Promise<void> {
+    stream.pipe(new NullWritable())
+    return Promise.resolve()
+  }
+
+  protected onMailFrom (address: SMTPServerAddress, session: SMTPServerSession): Promise<void> {
+    return Promise.resolve()
+  }
+
+  protected onRcptTo (address: SMTPServerAddress, session: SMTPServerSession): Promise<void> {
+    return Promise.resolve()
+  }
+
+  protected onError (error: Error): Promise<void> {
+    return Promise.resolve()
   }
 }
 

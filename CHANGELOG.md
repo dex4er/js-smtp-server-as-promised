@@ -1,5 +1,11 @@
 # Changelog
 
+## v5.0.0 2018-09-17
+
+* Callback handler are replaced with protected methods that should be overriden
+  in own subclass.
+* `onData` handler consumes the stream after error.
+
 ## v4.1.0 2018-09-10
 
 * New method `destroy`.

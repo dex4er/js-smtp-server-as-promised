@@ -8,7 +8,8 @@ This module provides promisified version of
 [`smtp-server`](https://www.npmjs.com/package/smtp-server) module. The API is
 the same as for `smtp-server`, except `listen` method which return
 [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
-object and callback options which are `Promise` objects.
+object and callback options which should be replaced with overriden method in
+own subclass.
 
 ## Requirements
 
@@ -44,51 +45,67 @@ Transpiling this module with own settings in `tsconfig.json`:
 
 ```js
 const { SMTPServerAsPromised } = require('smtp-server-as-promised')
+
+class MySMTPServer extends SMTPServerAsPromised {}
 ```
 
 _Typescript:_
 
 ```ts
 import SMTPServerAsPromised from 'smtp-server-as-promised'
+
+class MySMTPServer extends SMTPServerAsPromised {}
 ```
 
 ### constructor
 
 ```js
-const server = new SMTPServerAsPromised(options)
+const server = new MySMTPServer(options)
 ```
 
-Create new SMTPServer instance.
+Create new `SMTPServerAsPromised` instance.
 
 _Example:_
 
 ```js
-const server = new SMTPServerAsPromised({
-  onConnect, onMailFrom, onData, onError
+const server = new MySMTPServer({
+  disabledCommands: ['AUTH']
 })
 ```
 
-Options are the same as for original `smtp-server` constructor. Callback
-handlers are `Promise` objects or `async` functions:
+Options are the same as for original `smtp-server` constructor except callback
+handlers that methods of this class should be used instead.
 
 ### onConnect
 
+This method can be overriden in subclass.
+
+_Example:_
+
 ```js
-async function onConnect (session) {
-  console.log(`[${session.id}] onConnect`)
+class MySMTPServer extends SMTPServerAsPromised {
+  async onConnect (session) {
+    console.log(`[${session.id}] onConnect`)
+  }
 }
 ```
 
 ### onAuth
 
+This method can be overriden in subclass.
+
+_Example:_
+
 <!-- markdownlint-disable MD013 -->
 
 ```js
-async function onAuth (auth, session) {
-  if (auth.method === 'PLAIN' && auth.username === 'username' && auth.password === 'password') {
-    return {user: auth.username}
-  } else {
-    throw new Error('Invalid username or password')
+class MySMTPServer extends SMTPServerAsPromised {
+  async onAuth (auth, session) {
+    if (auth.method === 'PLAIN' && auth.username === 'username' && auth.password === 'password') {
+      return { user: auth.username }
+    } else {
+      throw new Error('Invalid username or password')
+    }
   }
 }
 ```
@@ -99,11 +116,17 @@ This method must return the object with `user` property.
 
 ### onMailFrom
 
+This method can be overriden in subclass.
+
+_Example:_
+
 ```js
-async function onMailFrom (from, session) {
-  console.log(`[${session.id}] onMailFrom ${from.address}`)
-  if (from.address.split('@')[1] === 'spammer.com') {
-    throw new Error('we do not like spam!')
+class MySMTPServer extends SMTPServerAsPromised {
+  async onMailFrom (from, session) {
+    console.log(`[${session.id}] onMailFrom ${from.address}`)
+    if (from.address.split('@')[1] === 'spammer.com') {
+      throw new Error('we do not like spam!')
+    }
   }
 }
 ```
@@ -112,30 +135,42 @@ An errors can be thrown and then are handled by server in response message.
 
 ### onRcptTo
 
+This method can be overriden in subclass.
+
+_Example:_
+
 ```js
-async function onRcptTo (to, session) {
-  console.log(`[${session.id}] onRcptTo ${to.address}`)
-  if (from.address.split('@')[1] === 'spammer.com') {
-    throw new Error('we do not like spam!')
+class MySMTPServer extends SMTPServerAsPromised {
+  async onRcptTo (to, session) {
+    console.log(`[${session.id}] onRcptTo ${to.address}`)
+    if (from.address.split('@')[1] === 'spammer.com') {
+      throw new Error('we do not like spam!')
+    }
   }
 }
 ```
 
 ### onData
 
+This method can be overriden in subclass.
+
+_Example:_
+
 <!-- markdownlint-disable MD013 -->
 
 ```js
-async function onData (stream, session) {
-  console.log(`[${session.id}] onData started`)
-  session.messageLength = 0
+class MySMTPServer extends SMTPServerAsPromised {
+  async onData (stream, session) {
+    console.log(`[${session.id}] onData started`)
+    session.messageLength = 0
 
-  for (let chunk; (chunk = await stream.read());) {
-    console.log(`[${session.id}] onData got data chunk ${chunk.length} bytes`)
-    session.messageLength += chunk.length
+    for (let chunk; (chunk = await stream.read());) {
+      console.log(`[${session.id}] onData got data chunk ${chunk.length} bytes`)
+      session.messageLength += chunk.length
+    }
+
+    console.log(`[${session.id}] onData finished after reading ${session.messageLength} bytes`)
   }
-
-  console.log(`[${session.id}] onData finished after reading ${session.messageLength} bytes`)
 }
 ```
 
@@ -145,29 +180,20 @@ async function onData (stream, session) {
 [`stream.Readable`](https://nodejs.org/api/stream.html#stream_class_stream_readable)
 object.
 
-Warning: if an error occures in `onData` handler, stream have to be consumed
-before return from function.
-
-_Example_:
-
-```js
-const { NullWritable } = require('null-writable')
-
-async function onData (stream, session) {
-  try {
-    throw new Error('Something bad happened')
-  } catch (e) {
-    stream.pipe(new NullWritable())  // read it to the end
-    throw e  // rethrow original error
-  }
-}
-```
+If the method throws an error then the stream is silently consumed to prevent
+SMTP stream to be blocked.
 
 ### onError
 
+This method can be overriden in subclass.
+
+_Example:_
+
 ```js
-async function onError (e) {
-  console.log('Server error:', e)
+class MySMTPServer extends SMTPServerAsPromised {
+  async onError (error) {
+    console.log('Server error:', error)
+  }
 }
 ```
 

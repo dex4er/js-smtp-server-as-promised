@@ -9,11 +9,13 @@ import { SMTPServerAsPromised, SMTPServerAuthentication, SMTPServerAuthenticatio
 Feature('Test smtp-server-as-promised module', () => {
   const crlf = '\x0d\x0a'
 
-  async function onAuth (auth: SMTPServerAuthentication, _session: SMTPServerSession): Promise<SMTPServerAuthenticationResponse> {
-    if (auth.method === 'PLAIN' && auth.username === 'username' && auth.password === 'password') {
-      return { user: auth.username }
-    } else {
-      throw new Error('Invalid username or password')
+  class MySMTPServer extends SMTPServerAsPromised {
+    protected async onAuth (auth: SMTPServerAuthentication, _session: SMTPServerSession): Promise<SMTPServerAuthenticationResponse> {
+      if (auth.method === 'PLAIN' && auth.username === 'username' && auth.password === 'password') {
+        return { user: auth.username }
+      } else {
+        throw new Error('Invalid username or password')
+      }
     }
   }
 
@@ -31,12 +33,11 @@ Feature('Test smtp-server-as-promised module', () => {
     let address: AddressInfo
     let client: PromiseSocket<Socket>
     let lastChunk: Buffer | undefined
-    let server: SMTPServerAsPromised
+    let server: MySMTPServer
 
     Given('SMTPServerAsPromised object', () => {
-      server = new SMTPServerAsPromised({
-        hideSTARTTLS: true,
-        onAuth
+      server = new MySMTPServer({
+        hideSTARTTLS: true
       })
     })
 

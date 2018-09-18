@@ -5,6 +5,7 @@ import net from 'net'
 export { Logger, LoggerLevel } from 'nodemailer/lib/shared'
 import NullWritable from 'null-writable'
 import { Readable } from 'stream'
+import finished from 'stream.finished'
 import tls from 'tls'
 
 import { SMTPServer, SMTPServerAddress, SMTPServerAuthentication, SMTPServerAuthenticationResponse, SMTPServerOptions, SMTPServerSession } from 'smtp-server'
@@ -52,12 +53,22 @@ export class SMTPServerAsPromised {
         .then(() => callback())
         .catch((err: Error) => callback(err))
 
-    newOptions.onData = (stream: Readable, session: SMTPServerSession, callback: (err?: Error | null) => void) => this.onData(stream, session)
+    newOptions.onData = (stream: Readable, session: SMTPServerSession, callback: (err?: Error | null) => void) => {
+      const promiseStream = new Promise((resolve, reject) => {
+        finished(stream, (err) => {
+          if (err) reject(err)
+          else resolve()
+        })
+      })
+
+      return this.onData(stream, session)
+        .then(() => promiseStream)
         .then(() => callback())
         .catch((err: Error) => {
           stream.pipe(new NullWritable())
           callback(err)
         })
+    }
 
     newOptions.onClose = (session: SMTPServerSession) => this.onClose(session)
 

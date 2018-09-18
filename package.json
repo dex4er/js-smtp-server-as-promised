@@ -1,6 +1,6 @@
 {
   "name": "smtp-server-as-promised",
-  "version": "5.0.0",
+  "version": "5.1.0",
   "description": "Promisify smtp-server module",
   "main": "lib/smtp-server-as-promised.js",
   "typings": "lib/smtp-server-as-promised.d.ts",
@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "smtp-server": "^3.4.7",
+    "stream.finished": "^1.1.1",
     "tslib": "^1.9.3"
   },
   "devDependencies": {

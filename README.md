@@ -24,7 +24,7 @@ npm install smtp-server-as-promised
 _Additionally for Typescript:_
 
 ```shell
-npm install -D @types/node @types/nodemailer
+npm install -D @types/node @types/nodemailer @types/smtp-server
 ```
 
 Transpiling this module with own settings in `tsconfig.json`:

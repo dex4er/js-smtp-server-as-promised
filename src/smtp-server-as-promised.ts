@@ -128,31 +128,38 @@ export class SMTPServerAsPromised {
     }
   }
 
+  /** This method can be overriden in subclass */
   protected onAuth (auth: SMTPServerAuthentication, session: SMTPServerSession): Promise<SMTPServerAuthenticationResponse> {
     return Promise.reject(new Error('onAuth method not overriden in subclass'))
   }
 
+  /** This method can be overriden in subclass */
   protected onClose (session: SMTPServerSession): Promise<void> {
     return Promise.resolve()
   }
 
+  /** This method can be overriden in subclass */
   protected onConnect (session: SMTPServerSession): Promise<void> {
     return Promise.resolve()
   }
 
+  /** This method can be overriden in subclass */
   protected onData (stream: Readable, session: SMTPServerSession): Promise<void> {
     stream.pipe(new NullWritable())
     return Promise.resolve()
   }
 
+  /** This method can be overriden in subclass */
   protected onMailFrom (address: SMTPServerAddress, session: SMTPServerSession): Promise<void> {
     return Promise.resolve()
   }
 
+  /** This method can be overriden in subclass */
   protected onRcptTo (address: SMTPServerAddress, session: SMTPServerSession): Promise<void> {
     return Promise.resolve()
   }
 
+  /** This method can be overriden in subclass */
   protected onError (error: Error): Promise<void> {
     return Promise.resolve()
   }

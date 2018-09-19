@@ -1,5 +1,10 @@
 # Changelog
 
+## v5.1.0 2018-09-19
+
+* `onData` method is resolved when `stream` is finished. It is rejected if the
+  `stream` is already finished.
+
 ## v5.0.0 2018-09-17
 
 * Callback handler are replaced with protected methods that should be overriden

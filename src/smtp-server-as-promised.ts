@@ -1,6 +1,7 @@
 /// <reference types="node" />
 /// <reference types="nodemailer" />
 
+import isStreamEnded from 'is-stream-ended'
 import net from 'net'
 export { Logger, LoggerLevel } from 'nodemailer/lib/shared'
 import NullWritable from 'null-writable'
@@ -55,11 +56,18 @@ export class SMTPServerAsPromised {
 
     newOptions.onData = (stream: Readable, session: SMTPServerSession, callback: (err?: Error | null) => void) => {
       const promiseStream = new Promise((resolve, reject) => {
+        if (isStreamEnded(stream)) {
+          return resolve()
+        }
         finished(stream, (err) => {
           if (err) reject(err)
           else resolve()
         })
       })
+
+      if (isStreamEnded(stream)) {
+        return callback(new Error('SMTP data stream is already ended'))
+      }
 
       return this.onData(stream, session)
         .then(() => promiseStream)

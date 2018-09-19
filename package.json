@@ -23,6 +23,7 @@
     "node": ">=6.0.0"
   },
   "dependencies": {
+    "is-stream-ended": "^0.1.4",
     "smtp-server": "^3.4.7",
     "stream.finished": "^1.1.1",
     "tslib": "^1.9.3"

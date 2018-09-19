@@ -180,7 +180,8 @@ class MySMTPServer extends SMTPServerAsPromised {
 [`stream.Readable`](https://nodejs.org/api/stream.html#stream_class_stream_readable)
 object.
 
-The method is resolved when `stream` is finished.
+The method is resolved when `stream` is finished. It is rejected if the `stream`
+is already finished.
 
 If the method throws an error then the stream is silently consumed to prevent
 SMTP stream to be blocked.

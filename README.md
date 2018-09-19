@@ -162,14 +162,7 @@ _Example:_
 class MySMTPServer extends SMTPServerAsPromised {
   async onData (stream, session) {
     console.log(`[${session.id}] onData started`)
-    session.messageLength = 0
-
-    for (let chunk; (chunk = await stream.read());) {
-      console.log(`[${session.id}] onData got data chunk ${chunk.length} bytes`)
-      session.messageLength += chunk.length
-    }
-
-    console.log(`[${session.id}] onData finished after reading ${session.messageLength} bytes`)
+    stream.pipe(process.stdout)
   }
 }
 ```
@@ -180,11 +173,11 @@ class MySMTPServer extends SMTPServerAsPromised {
 [`stream.Readable`](https://nodejs.org/api/stream.html#stream_class_stream_readable)
 object.
 
-The method is resolved when `stream` is finished. It is rejected if the `stream`
-is already finished.
+The method blocks SMTP session until `stream` is finished. It breaks session if
+`stream` is already finished.
 
-If the method throws an error then the stream is silently consumed to prevent
-SMTP stream to be blocked.
+If the method throws an error then the `stream` is silently consumed to
+prevent SMTP stream to be blocked.
 
 ### onError
 

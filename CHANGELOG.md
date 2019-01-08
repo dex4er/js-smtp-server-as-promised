@@ -1,5 +1,9 @@
 # Changelog
 
+## v5.1.1 2019-01-08
+
+* Uses smtp-server@3.5.0
+
 ## v5.1.0 2018-09-19
 
 * `onData` method is resolved when `stream` is finished. It is rejected if the

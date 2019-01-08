@@ -1,6 +1,6 @@
 {
   "name": "smtp-server-as-promised",
-  "version": "5.1.1",
+  "version": "5.1.2",
   "description": "Promisify smtp-server module",
   "main": "lib/smtp-server-as-promised.js",
   "typings": "lib/smtp-server-as-promised.d.ts",
@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "is-stream-ended": "^0.1.4",
+    "null-writable": "^1.0.0",
     "smtp-server": "^3.5.0",
     "stream.finished": "^1.1.1",
     "tslib": "^1.9.3"
@@ -47,7 +48,6 @@
     "eslint-plugin-standard": "^4.0.0",
     "markdownlint-cli": "^0.13.0",
     "mocha": "^5.2.0",
-    "null-writable": "^1.0.0",
     "nyc": "^13.1.0",
     "promise-readable": "^3.1.5",
     "promise-socket": "^3.1.1",

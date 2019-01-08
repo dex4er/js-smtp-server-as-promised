@@ -1,5 +1,9 @@
 # Changelog
 
+## v5.1.2 2019-01-08
+
+* Use null-writable as productional dependency.
+
 ## v5.1.1 2019-01-08
 
 * Uses smtp-server@3.5.0

@@ -1,5 +1,9 @@
 # Changelog
 
+## v5.2.0 2019-01-28
+
+* `onData` method's first argument is an `SMTPServerDataStream` interface.
+
 ## v5.1.2 2019-01-08
 
 * Use null-writable as productional dependency.

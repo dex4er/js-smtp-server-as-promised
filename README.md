@@ -162,6 +162,7 @@ _Example:_
 class MySMTPServer extends SMTPServerAsPromised {
   async onData (stream, session) {
     console.log(`[${session.id}] onData started`)
+    if (stream.sizeExceeded) throw new Error('Message too big');
     stream.pipe(process.stdout)
   }
 }
@@ -169,9 +170,9 @@ class MySMTPServer extends SMTPServerAsPromised {
 
 <!-- markdownlint-enable MD013 -->
 
-`stream` object is a standard
-[`stream.Readable`](https://nodejs.org/api/stream.html#stream_class_stream_readable)
-object.
+`stream` object is a
+[`stream.Duplex`](https://nodejs.org/api/stream.html#stream_class_stream_duplex)
+object with additional properties: `byteLength` and `sizeExceeded`.
 
 The method blocks SMTP session until `stream` is finished. It breaks session if
 `stream` is already finished.

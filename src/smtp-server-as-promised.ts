@@ -5,11 +5,10 @@ import isStreamEnded from 'is-stream-ended'
 import net from 'net'
 export { Logger, LoggerLevel } from 'nodemailer/lib/shared'
 import NullWritable from 'null-writable'
-import { Readable } from 'stream'
 import finished from 'stream.finished'
 import tls from 'tls'
 
-import { SMTPServer, SMTPServerAddress, SMTPServerAuthentication, SMTPServerAuthenticationResponse, SMTPServerOptions, SMTPServerSession } from 'smtp-server'
+import { SMTPServer, SMTPServerAddress, SMTPServerAuthentication, SMTPServerAuthenticationResponse, SMTPServerDataStream, SMTPServerOptions, SMTPServerSession } from 'smtp-server'
 
 export * from 'smtp-server'
 
@@ -54,7 +53,7 @@ export class SMTPServerAsPromised {
         .then(() => callback())
         .catch((err: Error) => callback(err))
 
-    newOptions.onData = (stream: Readable, session: SMTPServerSession, callback: (err?: Error | null) => void) => {
+    newOptions.onData = (stream: SMTPServerDataStream, session: SMTPServerSession, callback: (err?: Error | null) => void) => {
       const promiseStream = new Promise((resolve, reject) => {
         if (isStreamEnded(stream)) {
           return resolve()
@@ -152,7 +151,7 @@ export class SMTPServerAsPromised {
   }
 
   /** This method can be overriden in subclass */
-  protected onData (stream: Readable, session: SMTPServerSession): Promise<void> {
+  protected onData (stream: SMTPServerDataStream, session: SMTPServerSession): Promise<void> {
     stream.pipe(new NullWritable())
     return Promise.resolve()
   }

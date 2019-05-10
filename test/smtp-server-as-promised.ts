@@ -1,9 +1,6 @@
 import {After, And, Feature, Given, Scenario, Then, When} from './lib/steps'
 
-import chai, {expect} from 'chai'
-
-import chaiAsPromised from 'chai-as-promised'
-chai.use(chaiAsPromised)
+import {expect} from 'chai'
 
 import {AddressInfo, Socket} from 'net'
 import PromiseSocket from 'promise-socket'

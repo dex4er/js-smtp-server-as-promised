@@ -2,9 +2,7 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "baseUrl": "../",
-    "lib": [
-      "es2017"
-    ],
+    "lib": ["es2017"],
     "noEmit": true
   },
   "exclude": []

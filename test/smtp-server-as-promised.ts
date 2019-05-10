@@ -1,31 +1,51 @@
-import { After, And, Feature, Given, Scenario, Then, When } from './lib/steps'
+import {After, And, Feature, Given, Scenario, Then, When} from './lib/steps'
 
-import { AddressInfo, Socket } from 'net'
+import chai from 'chai'
+chai.should()
+
+import chaiAsPromised from 'chai-as-promised'
+chai.use(chaiAsPromised)
+
+import {AddressInfo, Socket} from 'net'
 import PromiseSocket from 'promise-socket'
 import semver from 'semver'
 
-import { SMTPServerAsPromised, SMTPServerAuthentication, SMTPServerAuthenticationResponse, SMTPServerSession } from '../src/smtp-server-as-promised'
+import {
+  SMTPServerAsPromised,
+  SMTPServerAuthentication,
+  SMTPServerAuthenticationResponse,
+  SMTPServerSession,
+} from '../src/smtp-server-as-promised'
 
 Feature('Test smtp-server-as-promised module', () => {
   const crlf = '\x0d\x0a'
 
   class MySMTPServer extends SMTPServerAsPromised {
-    protected async onAuth (auth: SMTPServerAuthentication, _session: SMTPServerSession): Promise<SMTPServerAuthenticationResponse> {
+    protected async onAuth(
+      auth: SMTPServerAuthentication,
+      _session: SMTPServerSession,
+    ): Promise<SMTPServerAuthenticationResponse> {
       if (auth.method === 'PLAIN' && auth.username === 'username' && auth.password === 'password') {
-        return { user: auth.username }
+        return {user: auth.username}
       } else {
         throw new Error('Invalid username or password')
       }
     }
   }
 
-  const rfc2822Message = '' +
-    'From: sender@example.com' + crlf +
-    'To: recipient@example.net' + crlf +
-    'Subject: test' + crlf +
+  const rfc2822Message =
+    '' +
+    'From: sender@example.com' +
     crlf +
-    'Test' + crlf +
-    '.' + crlf
+    'To: recipient@example.net' +
+    crlf +
+    'Subject: test' +
+    crlf +
+    crlf +
+    'Test' +
+    crlf +
+    '.' +
+    crlf
 
   const authPlainString = Buffer.from('\0username\0password').toString('base64')
 
@@ -37,7 +57,7 @@ Feature('Test smtp-server-as-promised module', () => {
 
     Given('SMTPServerAsPromised object', () => {
       server = new MySMTPServer({
-        hideSTARTTLS: true
+        hideSTARTTLS: true,
       })
     })
 
@@ -46,7 +66,7 @@ Feature('Test smtp-server-as-promised module', () => {
     })
 
     When('listen method is used', async () => {
-      address = await server.listen({ port: 0 })
+      address = await server.listen({port: 0})
     })
 
     Then('port number should be correct', () => {
@@ -133,8 +153,8 @@ Feature('Test smtp-server-as-promised module', () => {
       // Not correct synchronization on Node < 10 because it misses
       // https://github.com/nodejs/node/commit/9b7a6914a7
       When('I send QUIT command', async () => {
-        void client.read().then((chunk) => {
-          lastChunk = chunk
+        void client.read().then(chunk => {
+          lastChunk = chunk as Buffer
         })
         await client.write('QUIT' + crlf)
       })

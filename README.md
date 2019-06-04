@@ -50,7 +50,7 @@ Transpiling this module with own settings in `tsconfig.json`:
 `smtp-server-as-promised` can be used like standard `smtp-server` module:
 
 ```js
-const {SMTPServerAsPromised} = require('smtp-server-as-promised')
+const {SMTPServerAsPromised} = require("smtp-server-as-promised")
 
 class MySMTPServer extends SMTPServerAsPromised {}
 ```
@@ -58,7 +58,7 @@ class MySMTPServer extends SMTPServerAsPromised {}
 _Typescript:_
 
 ```ts
-import SMTPServerAsPromised from 'smtp-server-as-promised'
+import SMTPServerAsPromised from "smtp-server-as-promised"
 
 class MySMTPServer extends SMTPServerAsPromised {}
 ```
@@ -75,7 +75,7 @@ _Example:_
 
 ```js
 const server = new MySMTPServer({
-  disabledCommands: ['AUTH'],
+  disabledCommands: ["AUTH"],
 })
 ```
 
@@ -107,10 +107,10 @@ _Example:_
 ```js
 class MySMTPServer extends SMTPServerAsPromised {
   async onAuth(auth, session) {
-    if (auth.method === 'PLAIN' && auth.username === 'username' && auth.password === 'password') {
+    if (auth.method === "PLAIN" && auth.username === "username" && auth.password === "password") {
       return {user: auth.username}
     } else {
-      throw new Error('Invalid username or password')
+      throw new Error("Invalid username or password")
     }
   }
 }
@@ -130,8 +130,8 @@ _Example:_
 class MySMTPServer extends SMTPServerAsPromised {
   async onMailFrom(from, session) {
     console.log(`[${session.id}] onMailFrom ${from.address}`)
-    if (from.address.split('@')[1] === 'spammer.com') {
-      throw new Error('we do not like spam!')
+    if (from.address.split("@")[1] === "spammer.com") {
+      throw new Error("we do not like spam!")
     }
   }
 }
@@ -149,8 +149,8 @@ _Example:_
 class MySMTPServer extends SMTPServerAsPromised {
   async onRcptTo(to, session) {
     console.log(`[${session.id}] onRcptTo ${to.address}`)
-    if (from.address.split('@')[1] === 'spammer.com') {
-      throw new Error('we do not like spam!')
+    if (from.address.split("@")[1] === "spammer.com") {
+      throw new Error("we do not like spam!")
     }
   }
 }
@@ -168,7 +168,7 @@ _Example:_
 class MySMTPServer extends SMTPServerAsPromised {
   async onData(stream, session) {
     console.log(`[${session.id}] onData started`)
-    if (stream.sizeExceeded) throw new Error('Message too big')
+    if (stream.sizeExceeded) throw new Error("Message too big")
     stream.pipe(process.stdout)
   }
 }
@@ -195,7 +195,7 @@ _Example:_
 ```js
 class MySMTPServer extends SMTPServerAsPromised {
   async onError(error) {
-    console.log('Server error:', error)
+    console.log("Server error:", error)
   }
 }
 ```

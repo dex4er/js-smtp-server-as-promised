@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-const fs = require('fs')
-const {PromiseReadable} = require('promise-readable')
+const fs = require("fs")
+const {PromiseReadable} = require("promise-readable")
 
-const {SMTPServerAsPromised} = require('../lib/smtp-server-as-promised')
+const {SMTPServerAsPromised} = require("../lib/smtp-server-as-promised")
 
 class MySMTPServer extends SMTPServerAsPromised {
   constructor(options) {
@@ -17,23 +17,23 @@ class MySMTPServer extends SMTPServerAsPromised {
 
   async onAuth(auth, session) {
     console.info(`[${session.id} onAuth ${auth.method} ${auth.username} ${auth.password}`)
-    if (auth.method === 'PLAIN' && auth.username === 'username' && auth.password === this.password) {
+    if (auth.method === "PLAIN" && auth.username === "username" && auth.password === this.password) {
       return {user: auth.username}
     } else {
-      throw new Error('Invalid username or password')
+      throw new Error("Invalid username or password")
     }
   }
 
   async onMailFrom(from, session) {
-    const tlsDebug = session.tlsOptions ? JSON.stringify(session.tlsOptions) : ''
+    const tlsDebug = session.tlsOptions ? JSON.stringify(session.tlsOptions) : ""
     console.info(
       `[${session.id}] onMailFrom ${from.address} ${session.openingCommand} ${session.transmissionType} ${tlsDebug}`,
     )
-    if (from.address.split('@')[1] === 'spammer.com') {
+    if (from.address.split("@")[1] === "spammer.com") {
       // code 421 disconnects SMTP session immediately
-      throw Object.assign(new Error('we do not like spam!'), {responseCode: 421})
-    } else if (from.address.split('@')[0] === 'bounce') {
-      throw Object.assign(new Error('fatal'), {responseCode: 500})
+      throw Object.assign(new Error("we do not like spam!"), {responseCode: 421})
+    } else if (from.address.split("@")[0] === "bounce") {
+      throw Object.assign(new Error("fatal"), {responseCode: 500})
     }
   }
 
@@ -56,7 +56,7 @@ class MySMTPServer extends SMTPServerAsPromised {
   }
 
   async onError(err) {
-    console.info('Server error:', err)
+    console.info("Server error:", err)
   }
 }
 
@@ -71,19 +71,19 @@ async function main() {
     {},
     ...process.argv
       .slice(2)
-      .map(a => a.split('='))
+      .map(a => a.split("="))
       .map(([k, v]) => ({[k]: v})),
   )
 
   const options = {...defaultOptions, ...userOptions}
 
   if (!userOptions.password) {
-    options.disabledCommands = ['AUTH']
+    options.disabledCommands = ["AUTH"]
   }
 
-  options.ca = typeof options.ca === 'string' ? fs.readFileSync(options.ca) : undefined
-  options.cert = typeof options.cert === 'string' ? fs.readFileSync(options.cert) : undefined
-  options.key = typeof options.key === 'string' ? fs.readFileSync(options.key) : undefined
+  options.ca = typeof options.ca === "string" ? fs.readFileSync(options.ca) : undefined
+  options.cert = typeof options.cert === "string" ? fs.readFileSync(options.cert) : undefined
+  options.key = typeof options.key === "string" ? fs.readFileSync(options.key) : undefined
 
   const server = new MySMTPServer(options)
   const address = await server.listen(options)

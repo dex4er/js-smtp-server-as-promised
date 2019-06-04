@@ -1,12 +1,12 @@
 /// <reference types="node" />
 /// <reference types="nodemailer" />
 
-import isStreamEnded from 'is-stream-ended'
-import net from 'net'
-export {Logger, LoggerLevel} from 'nodemailer/lib/shared'
-import NullWritable from 'null-writable'
-import finished from 'stream.finished'
-import tls from 'tls'
+import isStreamEnded from "is-stream-ended"
+import net from "net"
+export {Logger, LoggerLevel} from "nodemailer/lib/shared"
+import NullWritable from "null-writable"
+import finished from "stream.finished"
+import tls from "tls"
 
 import {
   SMTPServer,
@@ -16,9 +16,9 @@ import {
   SMTPServerDataStream,
   SMTPServerOptions,
   SMTPServerSession,
-} from 'smtp-server'
+} from "smtp-server"
 
-export * from 'smtp-server'
+export * from "smtp-server"
 
 export interface SMTPServerAsPromisedServerAddress {
   address: string
@@ -93,7 +93,7 @@ export class SMTPServerAsPromised {
       })
 
       if (isStreamEnded(stream)) {
-        return callback(new Error('SMTP data stream is already ended'))
+        return callback(new Error("SMTP data stream is already ended"))
       }
 
       return this.onData(stream, session)
@@ -109,7 +109,7 @@ export class SMTPServerAsPromised {
 
     this.server = new SMTPServer({...(options as SMTPServerOptions), ...newOptions})
 
-    this.server.on('error', (err: Error) => this.onError(err))
+    this.server.on("error", (err: Error) => this.onError(err))
   }
 
   listen(options: net.ListenOptions = {}): Promise<SMTPServerAsPromisedServerAddress> {
@@ -117,18 +117,18 @@ export class SMTPServerAsPromised {
       const netServer = this.server.server
 
       const listeningHandler = () => {
-        netServer.removeListener('error', errorHandler)
+        netServer.removeListener("error", errorHandler)
         const address = netServer.address() as SMTPServerAsPromisedServerAddress
         resolve(address)
       }
 
       const errorHandler = (err: Error) => {
-        netServer.removeListener('listening', listeningHandler)
+        netServer.removeListener("listening", listeningHandler)
         reject(err)
       }
 
-      netServer.once('listening', listeningHandler)
-      netServer.once('error', errorHandler)
+      netServer.once("listening", listeningHandler)
+      netServer.once("error", errorHandler)
 
       this.server.listen(options)
     })
@@ -139,7 +139,7 @@ export class SMTPServerAsPromised {
       this.server.close((err?: Error | null) => {
         this.closed = true
         if (this.errorHandler) {
-          this.server.removeListener('error', this.errorHandler)
+          this.server.removeListener("error", this.errorHandler)
           this.errorHandler = undefined
         }
         if (err) {

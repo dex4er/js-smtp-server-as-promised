@@ -29,22 +29,6 @@ _Additionally for Typescript:_
 npm install -D @types/node @types/nodemailer @types/smtp-server
 ```
 
-Transpiling this module with own settings in `tsconfig.json`:
-
-```json
-{
-  "compilerOptions": {
-    "baseUrl": ".",
-    "esModuleInterop": true,
-    "paths": {
-      "smtp-server-as-promised": ["node_modules/smtp-server-as-promised/src/smtp-server-as-promised"]
-    },
-    "strict": true
-  },
-  "include": ["*.ts", "node_modules/smtp-server-as-promised/src/*.ts"]
-}
-```
-
 ## Usage
 
 `smtp-server-as-promised` can be used like standard `smtp-server` module:
@@ -59,6 +43,8 @@ _Typescript:_
 
 ```ts
 import SMTPServerAsPromised from "smtp-server-as-promised"
+// or
+import {SMTPServerAsPromised} from "smtp-server-as-promised"
 
 class MySMTPServer extends SMTPServerAsPromised {}
 ```

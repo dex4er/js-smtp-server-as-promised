@@ -1,5 +1,10 @@
 # Changelog
 
+## v5.2.2 2019-06-04
+
+- Minor tweaks in README.
+- Added source map to the package.
+
 ## v5.2.1 2019-05-10
 
 - Updated dependencies.

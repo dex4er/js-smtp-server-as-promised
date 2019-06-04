@@ -4,6 +4,7 @@
 
 - Minor tweaks in README.
 - Added source map to the package.
+- Uses dirty-chai for tests.
 
 ## v5.2.1 2019-05-10
 

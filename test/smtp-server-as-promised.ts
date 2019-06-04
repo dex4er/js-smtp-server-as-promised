@@ -1,10 +1,13 @@
-import {After, And, Feature, Given, Scenario, Then, When} from "./lib/steps"
+import chai, {expect} from "chai"
 
-import {expect} from "chai"
+import dirtyChai from "dirty-chai"
+chai.use(dirtyChai)
 
 import {AddressInfo, Socket} from "net"
 import PromiseSocket from "promise-socket"
 import semver from "semver"
+
+import {After, And, Feature, Given, Scenario, Then, When} from "./lib/steps"
 
 import {
   SMTPServerAsPromised,
@@ -159,7 +162,7 @@ Feature("Test smtp-server-as-promised module", () => {
 
     And("there is nothing more to read", async () => {
       const chunk = await client.read()
-      return expect(chunk).to.be.undefined
+      expect(chunk).to.be.undefined()
     })
 
     After(async () => {

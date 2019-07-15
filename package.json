@@ -50,7 +50,7 @@
     "mocha": "^6.1.4",
     "nyc": "^14.1.1",
     "prettier": "^1.18.2",
-    "promise-readable": "^4.2.1",
+    "promise-readable": "^5.0.1",
     "promise-socket": "^5.0.0",
     "semver": "^6.2.0",
     "shx": "^0.3.2",

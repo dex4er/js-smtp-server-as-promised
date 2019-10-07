@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "is-stream-ended": "^0.1.4",
-    "null-writable": "^1.0.4",
+    "null-writable": "^1.0.5",
     "smtp-server": "^3.5.0",
     "stream.finished": "^1.2.0",
     "tslib": "^1.10.0"

@@ -1,5 +1,9 @@
 # Changelog
 
+## v5.2.4 2019-19-07
+
+- Updated dependencies.
+
 ## v5.2.3 2019-07-15
 
 - Updated dependencies.

@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "is-stream-ended": "^0.1.4",
-    "null-writable": "^1.0.4",
+    "null-writable": "^1.0.5",
     "smtp-server": "^3.5.0",
     "stream.finished": "^1.2.0",
     "tslib": "^1.10.0"
@@ -51,8 +51,8 @@
     "mocha": "^6.2.1",
     "nyc": "^14.1.1",
     "prettier": "^1.18.2",
-    "promise-readable": "^5.0.2",
-    "promise-socket": "^6.0.1",
+    "promise-readable": "^5.0.3",
+    "promise-socket": "^6.0.2",
     "semver": "^6.3.0",
     "shx": "^0.3.2",
     "ts-node": "^8.4.1",

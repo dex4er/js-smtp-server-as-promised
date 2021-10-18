@@ -20,7 +20,7 @@
   },
   "homepage": "http://github.com/dex4er/js-smtp-server-as-promised",
   "engines": {
-    "node": ">=6.0.0"
+    "node": ">=v14.18.1"
   },
   "dependencies": {
     "is-stream-ended": "^0.1.4",

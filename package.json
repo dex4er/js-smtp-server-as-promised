@@ -30,12 +30,12 @@
     "tslib": "^1.10.0"
   },
   "devDependencies": {
-    "@types/chai": "^4.2.3",
+    "@types/chai": "^5.2.3",
     "@types/dirty-chai": "^2.0.2",
-    "@types/mocha": "^5.2.7",
-    "@types/node": "^12.7.12",
-    "@types/nodemailer": "^6.2.1",
-    "@types/semver": "^6.0.2",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^24.13.3",
+    "@types/nodemailer": "^8.0.1",
+    "@types/semver": "^7.8.0",
     "@types/smtp-server": "^3.5.2",
     "chai": "^4.2.0",
     "changelog-parser": "^2.8.0",
